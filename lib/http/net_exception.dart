@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../lib_delegate.dart';
+import '../lib_config.dart';
 
 class NetException implements Exception {
   int code;
@@ -11,7 +11,7 @@ class NetException implements Exception {
   NetException(this.code, {this.defaultMsg = ""});
 
   String get message {
-    var suffix = degbuEnable ? "_$code" : "";
+    var suffix = LibConfig.degbuEnable ? "_$code" : "";
     var trCode = "net_code_$code";
     var tr = trCode.tr;
     if (tr == trCode) {

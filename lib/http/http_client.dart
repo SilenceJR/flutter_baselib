@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 
-import '../lib_delegate.dart';
+import '../lib_config.dart';
 import 'model/response.dart';
 import 'net_exception.dart';
 
@@ -17,11 +17,11 @@ class DioClient {
 
   DioClient._internal() {
     _dio.options
-      ..baseUrl = httpBaseUrl
+      ..baseUrl = LibConfig.httpBaseUrl
       ..connectTimeout = 30000
       ..receiveTimeout = 10000
       ..sendTimeout = 10000;
-    _dio.interceptors.addAll(httpInterceptors);
+    _dio.interceptors.addAll(LibConfig.httpInterceptors);
   }
 
   void clearHttpTask() {
@@ -74,11 +74,11 @@ class DioClient {
         }
         errorCode = resData["code"] ?? -1;
         errorMsg = resData["msg"] ?? "";
-        if (errorCode == net_ok_code) {
+        if (errorCode == LibConfig.net_ok_code) {
           var data = resData["data"];
           return AppResponse.ok(null == dataDecoder ? data : dataDecoder(data), code: errorCode, msg: errorMsg);
         }
-        net_error_func.call(errorCode);
+        LibConfig.net_error_func.call(errorCode);
       }
     } catch (e, s) {
       print(e);
