@@ -1,8 +1,14 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:baselib/ext/ext.dart';
 
 class Utils {
   static void hideKeyboard([BuildContext? context]) {
@@ -36,7 +42,7 @@ class Utils {
     }
   }
 
- static String hideMobile(String mobile) {
+  static String hideMobile(String mobile) {
     if (mobile.length > 4) {
       try {
         return mobile.replaceFirst(RegExp(r'\d{4}'), '****', 3);
@@ -45,5 +51,19 @@ class Utils {
       }
     }
     return mobile;
+  }
+
+  ///RepaintBoundary
+  static save2Gallery(BuildContext context) async {
+    var permission = await Permission.storage.request();
+    if (!permission.isGranted) {
+      Get.showToast("无存储权限");
+      return;
+    }
+    RenderRepaintBoundary renderObject = context.findRenderObject() as RenderRepaintBoundary;
+    var image = await renderObject.toImage(pixelRatio: MediaQuery.of(context).devicePixelRatio);
+    var byteData = (await image.toByteData(format: ImageByteFormat.png))!.buffer.asUint8List();
+    await ImageGallerySaver.saveImage(byteData, quality: 100);
+    Get.showToast("已保存至相册");
   }
 }
