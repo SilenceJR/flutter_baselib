@@ -1,0 +1,61 @@
+import 'dart:convert';
+
+import 'package:flutter_matrix_park/lib/constant/apiConfig.dart';
+import 'package:flutter_matrix_park/lib/constant/net_code.dart';
+import 'package:flutter_matrix_park/lib/http/response.dart';
+import 'package:flutter_matrix_park/modules/global/global_cl.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/interceptors/get_modifiers.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+
+import 'net_exception.dart';
+
+class ApiClientProvider extends GetConnect {
+  final Function(Request request) tokenModifier = (request) async {
+    request.headers["Authorization"] = GlobalController.to.user.value?.token ?? "";
+    return request;
+  };
+
+  final RequestModifier logRequestModifier = (request) async {
+    Get.printInfo(info: "http:url     ======>   ${request.url}");
+    Get.printInfo(info: "http:header  ======>   ${jsonEncode(request.headers)}");
+    Get.printInfo(info: "http:body    ======>   ${await request.bodyBytes.bytesToString()}");
+    return request;
+  };
+
+  final ResponseModifier logResponseModifier = (request, response) async {
+    Get.printInfo(info: "http:response    ${jsonEncode(response)}");
+    return response;
+  };
+
+  var utf8decoder = Utf8Decoder();
+
+  @override
+  void onInit() {
+    printInfo(info: "ApiClientProvider----------------->onInit");
+    httpClient.baseUrl = ApiConfig.BASE_URL;
+    httpClient.timeout = Duration(seconds: 30);
+    httpClient.addRequestModifier(tokenModifier);
+    httpClient.addRequestModifier(logRequestModifier);
+    httpClient.addResponseModifier(logResponseModifier);
+  }
+
+  Future<AppResponse> postAccept(url, {dynamic body, Decoder decoder}) async {
+    Response<AppResponse> response =
+        await post<AppResponse>(url, body ?? {}, contentType: defaultContentType, decoder: (originResData) {
+      var resData = jsonDecode(utf8decoder.convert(jsonEncode(originResData).codeUnits));
+      var code = resData["code"] ?? NetCode.NET_CODE_FAILED;
+      var msg = resData["msg"] ?? "";
+      if (code == NetCode.NET_CODE_OK) {
+        var data = resData["data"];
+        return AppResponse.ok(null == decoder ? data : decoder(data), code: code, msg: msg);
+      }
+      return AppResponse.error(msg, code: code);
+    });
+    if (response.isOk) {
+      return response.body;
+    } else {
+      return AppResponse.exception(NetException(response.statusCode));
+    }
+  }
+}
