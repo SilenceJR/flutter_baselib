@@ -8,7 +8,7 @@ class GradientCheckBox extends StatelessWidget {
   final bool value;
   final double width;
   final double height;
-  final colors;
+  final List<Color> colors;
 
   GradientCheckBox({this.value = false, this.width = 20, this.height = 20, this.colors = const []});
 

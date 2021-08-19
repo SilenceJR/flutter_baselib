@@ -14,15 +14,15 @@ class AppResponse<T> {
 
   String get msg => _msg;
 
-  bool get ok => _code == LibConfig.net_ok_code;
+  bool get ok => _code == LibConfig.delegate.clientConfig.httpSuccessCode;
 
   AppResponse.ok(T? data, {int? code, msg = ""}) {
     this._data = data;
-    this._code = code ?? LibConfig.net_ok_code;
+    this._code = code ?? LibConfig.delegate.clientConfig.httpSuccessCode;
     this._msg = msg;
   }
 
-  AppResponse.exception(NetException e) {
+  AppResponse.exception(NetExceptionMixin e) {
     this._code = e.code;
     this._msg = e.message;
   }

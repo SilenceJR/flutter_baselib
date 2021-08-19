@@ -16,6 +16,7 @@ class ContainerAppBar extends StatelessWidget with PreferredSizeWidget {
         value: Theme.of(context).appBarTheme.systemOverlayStyle!,
         child: Material(
             elevation: Theme.of(context).appBarTheme.elevation ?? 2,
+            shadowColor: Theme.of(context).appBarTheme.shadowColor,
             child: SafeArea(
                 child: Container(
                     alignment: alignment ?? Alignment.bottomCenter,

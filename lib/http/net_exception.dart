@@ -2,16 +2,24 @@ import 'package:get/get.dart';
 
 import '../lib_config.dart';
 
-class NetException implements Exception {
+abstract class NetExceptionMixin implements Exception {
   int code;
   String defaultMsg;
 
-  var msgKey = [];
+  NetExceptionMixin(this.code, {this.defaultMsg = ""});
 
-  NetException(this.code, {this.defaultMsg = ""});
+  String get message;
+}
 
-  String get message {
-    var suffix = LibConfig.degbuEnable ? "_$code" : "";
+class NetExceptionDefault extends NetExceptionMixin implements Exception {
+
+  NetExceptionDefault(int code, {String defaultMsg = ""}) : super(code, defaultMsg: defaultMsg);
+
+  @override
+  String get message => _getMsg();
+
+  String _getMsg() {
+    var suffix = LibConfig.delegate.debugEnable ? "_$code" : "";
     var trCode = "net_code_$code";
     var tr = trCode.tr;
     if (tr == trCode) {

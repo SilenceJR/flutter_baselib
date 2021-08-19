@@ -12,20 +12,20 @@ class GradientButton extends StatefulWidget {
 
   GradientButton(
       {this.key,
-      required this.onPressed,
-      this.onLongPress,
-      this.focusNode,
-      this.autofocus = false,
-      required this.child,
-      required this.gradient,
-      this.borderRadius});
+        required this.onPressed,
+        this.onLongPress,
+        this.focusNode,
+        this.autofocus = false,
+        required this.child,
+        required this.gradient,
+        this.borderRadius});
 
   @override
   State<StatefulWidget> createState() => _GradientButtonState();
 }
 
 class _GradientButtonState extends State<GradientButton> {
-  var _elevation = 2.0;
+  var _elevation = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +40,7 @@ class _GradientButtonState extends State<GradientButton> {
           minHeight: buttonTheme.height.clamp(0, double.infinity),
         ),
         child: Material(
+          type: MaterialType.transparency,
           elevation: (null != widget.onPressed || null != widget.onLongPress) ? _elevation : 0.0,
           borderRadius: widget.borderRadius ?? (buttonTheme.shape as RoundedRectangleBorder).borderRadius,
           child: Ink(
@@ -49,7 +50,8 @@ class _GradientButtonState extends State<GradientButton> {
                 color: null == widget.onPressed && null == widget.onLongPress ? Theme.of(context).disabledColor : null,
                 shape: BoxShape.rectangle),
             child: InkWell(
-              borderRadius: widget.borderRadius ?? (buttonTheme.shape as RoundedRectangleBorder).borderRadius as BorderRadius,
+              borderRadius:
+              widget.borderRadius ?? (buttonTheme.shape as RoundedRectangleBorder).borderRadius as BorderRadius,
               focusNode: widget.focusNode,
               autofocus: widget.autofocus,
               splashColor: Colors.white38,
@@ -57,7 +59,7 @@ class _GradientButtonState extends State<GradientButton> {
               onTap: widget.onPressed,
               onHighlightChanged: (b) {
                 setState(() {
-                  _elevation = b ? 4.0 : 2.0;
+                  _elevation = b ? 4.0 : 0.0;
                 });
               },
               onLongPress: widget.onLongPress,

@@ -8,33 +8,46 @@ import '../lib_config.dart';
 import 'model/response.dart';
 import 'net_exception.dart';
 
-class DioClient {
-  static final DioClient instance = DioClient._internal();
+typedef AcceptFunc<T> = Future<AppResponse<T>> Function(Future<Response> Function() request, {T? Function(dynamic data)? dataDecoder});
 
+abstract class HttpClientConfig {
+  String get httpBaseUrl;
+
+  List<Interceptor> get httpInterceptors;
+
+  AcceptFunc get acceptFunc;
+
+  int get httpSuccessCode => 200;
+}
+
+class DioClient {
   static final utf8decoder = Utf8Decoder();
 
-  final Dio _dio = Dio();
+  final Dio dio;
 
-  DioClient._internal() {
-    _dio.options
-      ..baseUrl = LibConfig.httpBaseUrl
+  HttpClientConfig config;
+
+  DioClient(this.config) : dio = Dio() {
+    dio.options
+      ..baseUrl = config.httpBaseUrl
       ..connectTimeout = 30000
       ..receiveTimeout = 10000
       ..sendTimeout = 10000;
-    _dio.interceptors.addAll(LibConfig.httpInterceptors);
+    dio.interceptors.addAll(config.httpInterceptors);
   }
 
   void clearHttpTask() {
-    _dio.clear();
+    dio.clear();
   }
 
-  Future<String?> getString(String path, {
+  Future<String?> getString(
+    String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
-    var response = await _dio.get(path, queryParameters: queryParameters, options: options, cancelToken: cancelToken, onReceiveProgress: onReceiveProgress);
+    var response = await dio.get(path, queryParameters: queryParameters, options: options, cancelToken: cancelToken, onReceiveProgress: onReceiveProgress);
     if (response.statusCode == HttpStatus.ok) {
       return response.data.toString();
     }
@@ -43,47 +56,47 @@ class DioClient {
 
   Future<AppResponse<T?>> postAccept<T>(String url,
       {dynamic body,
-        T? Function(dynamic data)? dataDecoder,
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onSendProgress,
-        ProgressCallback? onReceiveProgress}) {
-    return _accept(
-            () =>
-            _dio.post(url,
-                data: body,
-                queryParameters: queryParameters,
-                options: options,
-                cancelToken: cancelToken,
-                onSendProgress: onReceiveProgress,
-                onReceiveProgress: onReceiveProgress),
-        dataDecoder: dataDecoder);
+      T? Function(dynamic data)? dataDecoder,
+      Map<String, dynamic>? queryParameters,
+      Options? options,
+      CancelToken? cancelToken,
+      ProgressCallback? onSendProgress,
+      ProgressCallback? onReceiveProgress}) {
+    return config.acceptFunc.call(
+        () => dio.post(url,
+            data: body,
+            queryParameters: queryParameters,
+            options: options,
+            cancelToken: cancelToken,
+            onSendProgress: onReceiveProgress,
+            onReceiveProgress: onReceiveProgress),
+        dataDecoder: dataDecoder) as Future<AppResponse<T?>>;
   }
+}
 
-  Future<AppResponse<T>> _accept<T>(Future<Response> Function() request, {T? Function(dynamic data)? dataDecoder}) async {
-    int errorCode = -1;
-    String errorMsg = "";
-    try {
-      var response = await request();
-      errorCode = response.statusCode!;
-      if (response.statusCode == HttpStatus.ok) {
-        var resData = response.data;
-        if (!(resData is Map<String, dynamic>)) {
-          resData = jsonEncode(resData);
-        }
-        errorCode = resData["code"] ?? -1;
-        errorMsg = resData["msg"] ?? "";
-        if (errorCode == LibConfig.net_ok_code) {
-          var data = resData["data"];
-          return AppResponse.ok(null == dataDecoder ? data : dataDecoder(data), code: errorCode, msg: errorMsg);
-        }
-        LibConfig.net_error_func.call(errorCode);
+//defalut
+Future<AppResponse<T>> defaultAccept<T>(Future<Response> Function() request, {T? Function(dynamic data)? dataDecoder, Function(int code)? netErrorFunc}) async {
+  int errorCode = -1;
+  String errorMsg = "";
+  try {
+    var response = await request();
+    errorCode = response.statusCode!;
+    if (response.statusCode == HttpStatus.ok) {
+      var resData = response.data;
+      if (!(resData is Map<String, dynamic>)) {
+        resData = jsonEncode(resData);
       }
-    } catch (e, s) {
-      print(e);
-      print(s);
+      errorCode = resData["code"] ?? -1;
+      errorMsg = resData["msg"] ?? "";
+      if (errorCode == LibConfig.delegate.clientConfig.httpSuccessCode) {
+        var data = resData["data"];
+        return AppResponse.ok(null == dataDecoder ? data : dataDecoder(data), code: errorCode, msg: errorMsg);
+      }
+      netErrorFunc?.call(errorCode);
     }
-    return AppResponse.exception(NetException(errorCode, defaultMsg: errorMsg));
+  } catch (e, s) {
+    print(e);
+    print(s);
   }
+  return AppResponse.exception(NetExceptionDefault(errorCode, defaultMsg: errorMsg));
 }
