@@ -10,14 +10,16 @@ import 'net_exception.dart';
 
 typedef AcceptFunc<T> = Future<AppResponse<T>> Function(Future<Response> Function() request, {T? Function(dynamic data)? dataDecoder});
 
-abstract class HttpClientConfig {
-  String get httpBaseUrl;
+class HttpClientConfig {
+  final String httpBaseUrl;
 
-  List<Interceptor> get httpInterceptors;
+  final List<Interceptor> httpInterceptors;
 
-  AcceptFunc get acceptFunc;
+  final AcceptFunc acceptFunc;
 
-  int get httpSuccessCode => 200;
+  final int httpSuccessCode;
+
+  HttpClientConfig.init({required this.httpBaseUrl, required this.httpInterceptors, required this.acceptFunc, this.httpSuccessCode = 200});
 }
 
 class DioClient {
