@@ -27,17 +27,17 @@ class DioClient {
 
   final Dio dio;
 
-  final HttpClientConfig config;
+  final HttpClientConfig _config;
 
-  DioClient()
+  DioClient({HttpClientConfig? config})
       : dio = Dio(),
-        config = LibConfig.delegate.clientConfig {
+        this._config = config ?? LibConfig.delegate.clientConfig {
     dio.options
-      ..baseUrl = config.httpBaseUrl
+      ..baseUrl = this._config.httpBaseUrl
       ..connectTimeout = 30000
       ..receiveTimeout = 10000
       ..sendTimeout = 10000;
-    dio.interceptors.addAll(config.httpInterceptors);
+    dio.interceptors.addAll(_config.httpInterceptors);
   }
 
   void clearHttpTask() {
@@ -66,7 +66,7 @@ class DioClient {
       CancelToken? cancelToken,
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress}) {
-    return config.acceptFunc.call(
+    return _config.acceptFunc.call(
         () => dio.post(url,
             data: body,
             queryParameters: queryParameters,
