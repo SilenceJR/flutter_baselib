@@ -25,9 +25,11 @@ class DioClient {
 
   final Dio dio;
 
-  HttpClientConfig config;
+  final HttpClientConfig config;
 
-  DioClient(this.config) : dio = Dio() {
+  DioClient()
+      : dio = Dio(),
+        config = LibConfig.delegate.clientConfig {
     dio.options
       ..baseUrl = config.httpBaseUrl
       ..connectTimeout = 30000

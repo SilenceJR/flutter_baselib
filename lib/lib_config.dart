@@ -5,7 +5,9 @@ class LibConfig {
 }
 
 abstract class ConfigDelegate {
-  bool get debugEnable;
+  bool debugEnable;
 
-  HttpClientConfig get clientConfig;
+  HttpClientConfig clientConfig;
+
+  ConfigDelegate.init({this.debugEnable = true, required this.clientConfig});
 }
