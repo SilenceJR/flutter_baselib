@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:get/get_connect/http/src/status/http_status.dart';
 
 import '../lib_config.dart';
 import 'model/response.dart';
-import 'net_exception.dart';
 
-typedef AcceptFunc<T> = Future<AppResponse<T>> Function(Response response, {T? Function(dynamic data)? dataDecoder});
+typedef AcceptFunc<T> = Future<AppResponse<T>> Function(dio.Response response, {T? Function(dynamic data)? dataDecoder});
 
 class HttpClientConfig {
   final String httpBaseUrl;
 
-  final List<Interceptor> httpInterceptors;
+  final List<dio.Interceptor> httpInterceptors;
 
   final AcceptFunc acceptFunc;
 
@@ -25,33 +24,33 @@ class HttpClientConfig {
 class DioClient {
   static final utf8decoder = Utf8Decoder();
 
-  final Dio dio;
+  final dio.Dio _dio;
 
   final HttpClientConfig _config;
 
   DioClient({HttpClientConfig? config})
-      : dio = Dio(),
+      : _dio = dio.Dio(),
         this._config = config ?? LibConfig.delegate.clientConfig {
-    dio.options
+    _dio.options
       ..baseUrl = this._config.httpBaseUrl
       ..connectTimeout = 30000
       ..receiveTimeout = 10000
       ..sendTimeout = 10000;
-    dio.interceptors.addAll(_config.httpInterceptors);
+    _dio.interceptors.addAll(_config.httpInterceptors);
   }
 
   void clearHttpTask() {
-    dio.clear();
+    _dio.clear();
   }
 
   Future<String?> getString(
     String path, {
     Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onReceiveProgress,
+    dio.Options? options,
+    dio.CancelToken? cancelToken,
+    dio.ProgressCallback? onReceiveProgress,
   }) async {
-    var response = await dio.get(path, queryParameters: queryParameters, options: options, cancelToken: cancelToken, onReceiveProgress: onReceiveProgress);
+    var response = await _dio.get(path, queryParameters: queryParameters, options: options, cancelToken: cancelToken, onReceiveProgress: onReceiveProgress);
     if (response.statusCode == HttpStatus.ok) {
       return response.data.toString();
     }
@@ -62,12 +61,12 @@ class DioClient {
       {dynamic body,
       T? Function(dynamic data)? dataDecoder,
       Map<String, dynamic>? queryParameters,
-      Options? options,
-      CancelToken? cancelToken,
-      ProgressCallback? onSendProgress,
-      ProgressCallback? onReceiveProgress}) async {
+      dio.Options? options,
+      dio.CancelToken? cancelToken,
+      dio.ProgressCallback? onSendProgress,
+      dio.ProgressCallback? onReceiveProgress}) async {
     return _config.acceptFunc.call(
-        await dio.post(url,
+        await _dio.post(url,
             data: body,
             queryParameters: queryParameters,
             options: options,
