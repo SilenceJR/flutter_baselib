@@ -8,7 +8,7 @@ import '../lib_config.dart';
 import 'model/response.dart';
 import 'net_exception.dart';
 
-typedef AcceptFunc<T> = Future<AppResponse<T>> Function(Future<Response> Function() request, {T? Function(dynamic data)? dataDecoder});
+typedef AcceptFunc<T> = Future<AppResponse<T>> Function(Response response, {T? Function(dynamic data)? dataDecoder});
 
 class HttpClientConfig {
   final String httpBaseUrl;
@@ -65,9 +65,9 @@ class DioClient {
       Options? options,
       CancelToken? cancelToken,
       ProgressCallback? onSendProgress,
-      ProgressCallback? onReceiveProgress}) {
+      ProgressCallback? onReceiveProgress}) async {
     return _config.acceptFunc.call(
-        () => dio.post(url,
+        await dio.post(url,
             data: body,
             queryParameters: queryParameters,
             options: options,
@@ -76,31 +76,4 @@ class DioClient {
             onReceiveProgress: onReceiveProgress),
         dataDecoder: dataDecoder) as Future<AppResponse<T?>>;
   }
-}
-
-//defalut
-Future<AppResponse<T>> defaultAccept<T>(Future<Response> Function() request, {T? Function(dynamic data)? dataDecoder, Function(int code)? netErrorFunc}) async {
-  int errorCode = -1;
-  String errorMsg = "";
-  try {
-    var response = await request();
-    errorCode = response.statusCode!;
-    if (response.statusCode == HttpStatus.ok) {
-      var resData = response.data;
-      if (!(resData is Map<String, dynamic>)) {
-        resData = jsonEncode(resData);
-      }
-      errorCode = resData["code"] ?? -1;
-      errorMsg = resData["msg"] ?? "";
-      if (errorCode == LibConfig.delegate.clientConfig.httpSuccessCode) {
-        var data = resData["data"];
-        return AppResponse.ok(null == dataDecoder ? data : dataDecoder(data), code: errorCode, msg: errorMsg);
-      }
-      netErrorFunc?.call(errorCode);
-    }
-  } catch (e, s) {
-    print(e);
-    print(s);
-  }
-  return AppResponse.exception(NetExceptionDefault(errorCode, defaultMsg: errorMsg));
 }

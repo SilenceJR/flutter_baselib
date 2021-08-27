@@ -7,10 +7,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 class AgreeDialog extends StatefulWidget {
   final String? title;
   final bool auth;
+  final String rejectButton;
+  final String agreeButton;
 
   final Widget? child;
 
-  AgreeDialog({this.title, this.auth = false, this.child});
+  AgreeDialog({this.title, this.auth = false, this.child, this.rejectButton = "reject", this.agreeButton = "agree"});
 
   @override
   State<StatefulWidget> createState() => _AgreeDialogState();
@@ -71,7 +73,7 @@ class _AgreeDialogState extends State<AgreeDialog> {
                                     Navigator.pop(context, false);
                                   }
                                 },
-                                child: Text("reject".tr)),
+                                child: Text(widget.rejectButton)),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -84,7 +86,7 @@ class _AgreeDialogState extends State<AgreeDialog> {
                                         }
                                       }
                                     : null,
-                                child: Text("agree".tr + (_downTime.value == 0 ? "" : "(${_downTime.value.toInt()}S)")))))
+                                child: Text(widget.agreeButton + (_downTime.value == 0 ? "" : "(${_downTime.value.toInt()}S)")))))
                       ],
                     ),
                   ),

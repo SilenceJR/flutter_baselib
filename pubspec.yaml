@@ -1,6 +1,6 @@
 name: baselib
 description: dev common lib
-version: 0.0.8
+version: 0.0.9
 homepage: https://gitee.com/Mocaris/flutter-baselib.git
 
 environment:
@@ -20,7 +20,7 @@ dependencies:
   flutter_html: ^2.1.1
   package_info: ^2.0.2
   flutter_native_image: ^0.0.6+1
-  wechat_assets_picker: ^6.0.4
+  wechat_assets_picker: ^6.0.5
   wechat_camera_picker: ^2.3.1
   image_gallery_saver: ^1.6.9
   cached_network_image: ^3.1.0
@@ -35,19 +35,6 @@ dependencies:
   webview_flutter: ^2.0.12
   url_launcher: ^6.0.9
   dotted_line: ^3.0.0
-  #  dashline
-#  badges: ^2.0.1
-#  animations: ^2.0.1
-#  ota_update: ^3.0.2
-#  android_intent: ^2.0.2
-#  meiqia_flutter:
-#    git:
-#      url: git://github.com/Mocaris/meiqia_flutter.git
-#  url_link:
-#    git:
-#      url: https://github.com/Mocaris/flutter_url_link.git
-#  native_pay_lib:
-#    path: ../../NativePayLib/native_pay_lib
 
 dev_dependencies:
   flutter_test:
