@@ -22,7 +22,7 @@ class AppResponse<T> {
     this._msg = msg;
   }
 
-  AppResponse.exception(NetExceptionMixin e) {
+  AppResponse.exception(NetException e) {
     this._code = e.code;
     this._msg = e.message;
   }
