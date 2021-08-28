@@ -67,7 +67,7 @@ class CommAppBar extends AppBar {
                       )
                     : null),
             automaticallyImplyLeading: automaticallyImplyLeading,
-            title: DefaultTextStyle(style: Get.textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w600), child: title ?? Text(titleStr ?? "")),
+            title: DefaultTextStyle(style: Get.textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w500), child: title ?? Text(titleStr ?? "")),
             actions: actions,
             flexibleSpace: flexibleSpace,
             bottom: bottom,
