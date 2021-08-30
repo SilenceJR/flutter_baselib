@@ -7,14 +7,16 @@ class ContainerAppBar extends StatelessWidget with PreferredSizeWidget {
   final Size? size;
   final Alignment? alignment;
   final EdgeInsets? padding;
+  final Color? backgroundColor;
 
-  ContainerAppBar({required this.child, this.size, this.alignment, this.padding});
+  ContainerAppBar({required this.child, this.size, this.alignment, this.padding, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: Theme.of(context).appBarTheme.systemOverlayStyle ?? SystemUiOverlayStyle.light,
         child: Material(
+            color: backgroundColor ?? Theme.of(context).appBarTheme.color,
             elevation: Theme.of(context).appBarTheme.elevation ?? 2,
             shadowColor: Theme.of(context).appBarTheme.shadowColor,
             child: SafeArea(
