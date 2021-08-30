@@ -17,7 +17,7 @@ class CheckedBox extends StatelessWidget {
         width: size,
         height: size,
         child: DecoratedBox(
-            child: Icon(Icons.done, color: Colors.white, size: size - 2),
+            child: value ? Icon(Icons.done, color: Colors.white, size: size - 2) : SizedBox(),
             decoration: BoxDecoration(
               shape: oval ? BoxShape.circle : BoxShape.rectangle,
               color: value ? checkColor ?? Theme.of(context).primaryColor : Colors.transparent,
