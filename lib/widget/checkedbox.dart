@@ -20,7 +20,7 @@ class CheckedBox extends StatelessWidget {
           color: Colors.transparent,
           borderRadius: oval ? BorderRadius.circular(size / 2.0) : BorderRadius.zero,
           elevation: value ? 2 : 0,
-          shadowColor: borderColor,
+          shadowColor: value ? checkColor : borderColor,
           child: DecoratedBox(
               child: Icon(Icons.done, color: Colors.white, size: size - 2),
               decoration: BoxDecoration(
