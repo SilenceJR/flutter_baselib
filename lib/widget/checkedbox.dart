@@ -16,26 +16,6 @@ class CheckedBox extends StatelessWidget {
     return SizedBox(
         width: size,
         height: size,
-        child: Material(
-          color: Colors.transparent,
-          borderRadius: oval ? BorderRadius.circular(size / 2.0) : BorderRadius.zero,
-          elevation: value ? 2 : 0,
-          shadowColor: value ? checkColor : borderColor,
-          child: DecoratedBox(
-              child: Icon(Icons.done, color: Colors.white, size: size - 2),
-              decoration: BoxDecoration(
-                shape: oval ? BoxShape.circle : BoxShape.rectangle,
-                color: value ? checkColor ?? Theme.of(context).primaryColor : Colors.white,
-                border: Border.all(color: value ? checkColor ?? Theme.of(context).primaryColor : borderColor ?? Theme.of(context).primaryColor),
-              )),
-        ));
-  }
-
-  @override
-  Widget build1(BuildContext context) {
-    return SizedBox(
-        width: size,
-        height: size,
         child: DecoratedBox(
             child: Icon(Icons.done, color: Colors.white, size: size - 2),
             decoration: BoxDecoration(
