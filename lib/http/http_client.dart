@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:baselib/baselib.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get_connect/http/src/status/http_status.dart';
 
 import '../lib_config.dart';
 import 'model/response.dart';
 
-typedef AcceptFunc<T> = Future<AppResponse<T>> Function(dio.Response response, {T? Function(dynamic data)? dataDecoder});
+typedef RequestFunc = Future<dio.Response> Function();
+
+typedef AcceptFunc<T> = Future<AppResponse<T>> Function(RequestFunc requestFunc, {T? Function(dynamic data)? dataDecoder});
 
 class HttpClientConfig {
   final String httpBaseUrl;
@@ -66,7 +69,7 @@ class DioClient {
       dio.ProgressCallback? onSendProgress,
       dio.ProgressCallback? onReceiveProgress}) async {
     return _config.acceptFunc.call(
-        await _dio.post(url,
+        () => _dio.post(url,
             data: body,
             queryParameters: queryParameters,
             options: options,

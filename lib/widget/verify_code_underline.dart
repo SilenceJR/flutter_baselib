@@ -9,12 +9,11 @@ class VerifyCodeUnderLineWidget extends StatefulWidget {
   final int length;
   final FocusNode editNode;
   final Function(String) callback;
+  final Size codeSize;
+  final BoxDecoration? decoration;
 
-  VerifyCodeUnderLineWidget({
-    required this.callback,
-    this.length = 6,
-    FocusNode? editNode,
-  }) : this.editNode = editNode ?? FocusNode();
+  VerifyCodeUnderLineWidget({required this.callback, this.length = 6, FocusNode? editNode, this.codeSize = const Size(45, 45), this.decoration})
+      : this.editNode = editNode ?? FocusNode();
 
   @override
   State<StatefulWidget> createState() => _VerifyCodeUnderLineWidgetState();
@@ -36,7 +35,7 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
   @override
   void initState() {
     super.initState();
-    if (null == _timer) {
+    if (null == _timer && null == widget.decoration) {
       _timer = Timer.periodic(Duration(milliseconds: 800), (timer) => _callback(timer));
     }
   }
@@ -65,10 +64,7 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
             height: 0,
             child: TextField(
               focusNode: widget.editNode,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp("[\\d]")),
-                LengthLimitingTextInputFormatter(widget.length)
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[\\d]")), LengthLimitingTextInputFormatter(widget.length)],
               keyboardType: TextInputType.number,
               autofillHints: [AutofillHints.oneTimeCode],
               autofocus: true,
@@ -100,14 +96,13 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
     return list;
   }
 
-  Widget _buildCodeItem(int index) =>
-      Container(
-        width: 45,
-        height: 45,
-        decoration: BoxDecoration(
-            border: index == codeStr.length && flash ? null : Border(bottom: BorderSide(color: Color(0xFF707070)))),
-        child: Center(
-            child: Text(codeStr.length > index ? codeStr.characters.elementAt(index) : "",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600))),
+  Widget _buildCodeItem(int index) => Container(
+        width: widget.codeSize.width,
+        height: widget.codeSize.height,
+        decoration: widget.decoration ??
+            BoxDecoration(
+                borderRadius: BorderRadius.circular(8), border: index == codeStr.length && flash ? null : Border(bottom: BorderSide(color: Color(0xFF707070)))),
+        child:
+            Center(child: Text(codeStr.length > index ? codeStr.characters.elementAt(index) : "", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600))),
       );
 }
