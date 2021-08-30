@@ -17,6 +17,7 @@ class CheckedBox extends StatelessWidget {
         width: size,
         height: size,
         child: Material(
+          color: Colors.transparent,
           borderRadius: oval ? BorderRadius.circular(size / 2.0) : BorderRadius.zero,
           elevation: value ? 2 : 0,
           shadowColor: borderColor,
@@ -25,10 +26,7 @@ class CheckedBox extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: oval ? BoxShape.circle : BoxShape.rectangle,
                 color: value ? checkColor ?? Theme.of(context).primaryColor : Colors.white,
-                border: Border.all(
-                    color: value
-                        ? checkColor ?? Theme.of(context).primaryColor
-                        : borderColor ?? Theme.of(context).primaryColor),
+                border: Border.all(color: value ? checkColor ?? Theme.of(context).primaryColor : borderColor ?? Theme.of(context).primaryColor),
               )),
         ));
   }
@@ -43,10 +41,7 @@ class CheckedBox extends StatelessWidget {
             decoration: BoxDecoration(
               shape: oval ? BoxShape.circle : BoxShape.rectangle,
               color: value ? checkColor ?? Theme.of(context).primaryColor : Colors.white,
-              border: Border.all(
-                  color: value
-                      ? checkColor ?? Theme.of(context).primaryColor
-                      : borderColor ?? Theme.of(context).primaryColor),
+              border: Border.all(color: value ? checkColor ?? Theme.of(context).primaryColor : borderColor ?? Theme.of(context).primaryColor),
             )));
   }
 }
