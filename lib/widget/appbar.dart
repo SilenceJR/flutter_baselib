@@ -13,7 +13,7 @@ class ContainerAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: Theme.of(context).appBarTheme.systemOverlayStyle!,
+        value: Theme.of(context).appBarTheme.systemOverlayStyle ?? SystemUiOverlayStyle.light,
         child: Material(
             elevation: Theme.of(context).appBarTheme.elevation ?? 2,
             shadowColor: Theme.of(context).appBarTheme.shadowColor,
