@@ -20,7 +20,7 @@ class CheckedBox extends StatelessWidget {
             child: Icon(Icons.done, color: Colors.white, size: size - 2),
             decoration: BoxDecoration(
               shape: oval ? BoxShape.circle : BoxShape.rectangle,
-              color: value ? checkColor ?? Theme.of(context).primaryColor : Colors.white,
+              color: value ? checkColor ?? Theme.of(context).primaryColor : Colors.transparent,
               border: Border.all(color: value ? checkColor ?? Theme.of(context).primaryColor : borderColor ?? Theme.of(context).primaryColor),
             )));
   }
