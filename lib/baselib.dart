@@ -8,4 +8,3 @@ export 'widget/widget.dart';
 export 'utils/utils.dart';
 export 'ext/ext.dart';
 export 'dialog/dialog.dart';
-export 'lib_config.dart';
