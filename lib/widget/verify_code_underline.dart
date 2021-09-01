@@ -24,7 +24,11 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
 
   bool flash = false;
 
+  bool call = false;
+
   Timer? _timer;
+
+  late TextEditingController _editController;
 
   void _callback(Timer timer) {
     setState(() {
@@ -35,9 +39,21 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
   @override
   void initState() {
     super.initState();
+    _editController = TextEditingController();
     if (null == _timer && null == widget.decoration) {
       _timer = Timer.periodic(Duration(milliseconds: 800), (timer) => _callback(timer));
     }
+    _editController.addListener(() {
+      codeStr = _editController.text;
+      if (codeStr.length < widget.length) {
+        call = false;
+      }
+      if (codeStr.length >= widget.length && !call) {
+        call = true;
+        widget.callback.call(codeStr);
+      }
+      setState(() {});
+    });
   }
 
   @override
@@ -63,21 +79,12 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
             width: 0,
             height: 0,
             child: TextField(
-              focusNode: widget.editNode,
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[\\d]")), LengthLimitingTextInputFormatter(widget.length)],
-              keyboardType: TextInputType.number,
-              autofillHints: [AutofillHints.oneTimeCode],
-              autofocus: true,
-              onChanged: (code) {
-                if (code.length <= widget.length) {
-                  codeStr = code;
-                  setState(() {});
-                }
-                if (codeStr.length >= widget.length) {
-                  widget.callback.call(codeStr);
-                }
-              },
-            ),
+                controller: _editController,
+                focusNode: widget.editNode,
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[\\d]")), LengthLimitingTextInputFormatter(widget.length)],
+                keyboardType: TextInputType.number,
+                autofillHints: [AutofillHints.oneTimeCode],
+                autofocus: true),
           ),
           Container(
             width: double.maxFinite,
@@ -101,8 +108,10 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
         height: widget.codeSize.height,
         decoration: widget.decoration ??
             BoxDecoration(
-                borderRadius: BorderRadius.circular(8), border: index == codeStr.length && flash ? null : Border(bottom: BorderSide(color: Color(0xFF707070)))),
-        child:
-            Center(child: Text(codeStr.length > index ? codeStr.characters.elementAt(index) : "", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600))),
+                borderRadius: BorderRadius.circular(8),
+                border: index == codeStr.length && flash ? null : Border(bottom: BorderSide(color: Color(0xFF707070)))),
+        child: Center(
+            child:
+                Text(codeStr.length > index ? codeStr.characters.elementAt(index) : "", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600))),
       );
 }
