@@ -5,18 +5,16 @@ import '../dialog/dialog.dart';
 import '../utils/util.dart';
 
 extension Alert on GetInterface {
-  Future<T?> showDialog<T>(
-    Widget widget, {
-    bool barrierDismissible = true,
-    Color barrierColor = Colors.black38,
-    bool useSafeArea = true,
-    Object? arguments,
-    Duration? transitionDuration,
-    Curve? transitionCurve,
-    String? name,
-    RouteSettings? routeSettings,
-    bool dismissLast = true,
-  }) {
+  Future<T?> showDialog<T>(Widget widget,
+      {bool barrierDismissible = true,
+      Color barrierColor = Colors.black38,
+      bool useSafeArea = true,
+      Object? arguments,
+      Duration? transitionDuration,
+      Curve? transitionCurve,
+      String? name,
+      RouteSettings? routeSettings,
+      bool dismissLast = true}) {
     Utils.hideKeyboard();
     if (dismissLast) {
       Get.dismissDialog();
@@ -32,24 +30,22 @@ extension Alert on GetInterface {
         routeSettings: routeSettings);
   }
 
-  Future<T?> showBottomSheet<T>(
-    Widget bottomsheet, {
-    Color? backgroundColor,
-    double? elevation,
-    bool persistent = true,
-    ShapeBorder? shape,
-    Clip? clipBehavior,
-    Color? barrierColor = Colors.black38,
-    bool? ignoreSafeArea,
-    bool isScrollControlled = false,
-    bool useRootNavigator = false,
-    bool isDismissible = true,
-    bool enableDrag = true,
-    RouteSettings? settings,
-    Duration? enterBottomSheetDuration,
-    Duration? exitBottomSheetDuration,
-    bool dismissLast = true,
-  }) {
+  Future<T?> showBottomSheet<T>(Widget bottomsheet,
+      {Color? backgroundColor,
+      double? elevation,
+      bool persistent = true,
+      ShapeBorder? shape,
+      Clip? clipBehavior,
+      Color? barrierColor = Colors.black38,
+      bool? ignoreSafeArea,
+      bool isScrollControlled = false,
+      bool useRootNavigator = false,
+      bool isDismissible = true,
+      bool enableDrag = true,
+      RouteSettings? settings,
+      Duration? enterBottomSheetDuration,
+      Duration? exitBottomSheetDuration,
+      bool dismissLast = true}) {
     Utils.hideKeyboard();
     if (dismissLast) {
       Get.dismissDialog();
@@ -75,24 +71,18 @@ extension Alert on GetInterface {
     Toast.show(Get.overlayContext!, content, gravity: gravity, duration: duration);
   }
 
-  Future<T?> showToastDialog<T>(
-    bool state,
-    String content, {
-    VoidCallback? successCallback,
-    bool dismissLast = true,
-  }) {
+  Future<T?> showToastDialog<T>(bool state, String content, {VoidCallback? successCallback, bool dismissLast = true}) {
     return showDialog(ToastDialog(state, content, successCallback: successCallback), dismissLast: dismissLast);
   }
 
-  Future<void> showLoadingDialog(
-      {String? content, bool outsideDismiss = false, bool onBackDismiss = true, bool dismissLast = true}) {
+  Future<void> showLoadingDialog({String? content, bool outsideDismiss = false, bool onBackDismiss = true, bool dismissLast = true}) {
     return showDialog(LoadingDialog(content, outsideDismiss: outsideDismiss, onBackDismiss: onBackDismiss),
         barrierDismissible: false, dismissLast: dismissLast);
   }
 
-  dismissDialog() {
+  dismissDialog<T>({T? result, bool closeOverlays = false, bool canPop = true, int? id}) {
     if ((Get.isDialogOpen ?? false) || (Get.isBottomSheetOpen ?? false)) {
-      Get.back();
+      Get.back(result: result, closeOverlays: closeOverlays, canPop: (Get.routing.isDialog ?? false) || (Get.routing.isBottomSheet ?? false), id: id);
     }
   }
 }
