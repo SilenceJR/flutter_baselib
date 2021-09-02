@@ -90,7 +90,7 @@ class _State extends State<CloseEyeTextField> {
 
   @override
   Widget build(BuildContext context) {
-    var _style = widget.style ?? TextStyle(fontSize: 14, color: Color(0xff333333));
+    var _style = widget.style ?? Theme.of(context).textTheme.bodyText2;
     return Container(
       height: widget.textFieldHeight,
       decoration: widget.decoration,
@@ -122,7 +122,7 @@ class _State extends State<CloseEyeTextField> {
               obscureText: _obscureText,
               inputFormatters: widget.inputFormatters,
               decoration: InputDecoration(
-                  hintStyle: widget.hintStyle ?? _style.copyWith(color: Theme.of(context).hintColor),
+                  hintStyle: widget.hintStyle ?? _style?.copyWith(color: Theme.of(context).hintColor),
                   hintText: widget.hint,
                   isDense: true,
                   border: InputBorder.none),
