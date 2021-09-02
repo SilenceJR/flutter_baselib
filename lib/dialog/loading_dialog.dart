@@ -21,11 +21,12 @@ class LoadingDialog extends StatelessWidget {
     }
   }
 
-  LoadingDialog(this.content, {this.outsideDismiss = false, this.onBackDismiss = false});
+  LoadingDialog(this.content, {this.outsideDismiss = false, this.onBackDismiss = false,this.backgroundColor});
 
   final String? content;
   final bool outsideDismiss;
   final bool onBackDismiss;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class LoadingDialog extends StatelessWidget {
               width: size,
               height: size,
               child: Card(
-                color: Colors.grey.withOpacity(0.8),
+                color: backgroundColor ?? Colors.grey.withOpacity(0.8),
                 child: Container(
                   padding: EdgeInsets.all(10),
                   child: Column(
@@ -60,15 +61,12 @@ class LoadingDialog extends StatelessWidget {
                       Expanded(
                           child: Center(
                               child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation(themeData.primaryColor),
-                                  backgroundColor: Colors.white))),
+                                  valueColor: AlwaysStoppedAnimation(themeData.primaryColor), backgroundColor: Colors.white))),
                       Visibility(
                           visible: null != content && content!.isNotEmpty,
                           child: Center(
-                            child: Text(content??"",
-                                style: TextStyle(color: Colors.white, fontSize: 12),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis),
+                            child: Text(content ?? "",
+                                style: TextStyle(color: Colors.white, fontSize: 12), maxLines: 2, overflow: TextOverflow.ellipsis),
                           ))
                     ],
                   ),

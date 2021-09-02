@@ -8,8 +8,9 @@ class WebDialog extends StatefulWidget {
   final String url;
   final String? title;
   final bool auth;
+  final Color? backgroundColor;
 
-  WebDialog(this.url, {this.title, this.auth = false});
+  WebDialog(this.url, {this.title, this.auth = false, this.backgroundColor});
 
   @override
   State<StatefulWidget> createState() => _WebState();
@@ -28,8 +29,7 @@ class _WebState extends State<WebDialog> {
   @override
   void initState() {
     super.initState();
-    _timer.setOnTimerTickCallback(
-        (millisUntilFinished) => _downTime.value = millisUntilFinished / 1000);
+    _timer.setOnTimerTickCallback((millisUntilFinished) => _downTime.value = millisUntilFinished / 1000);
     if (widget.auth) {
       _timer.startCountDown();
     }
@@ -49,6 +49,7 @@ class _WebState extends State<WebDialog> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Card(
+          color: widget.backgroundColor,
           margin: EdgeInsets.zero,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -56,17 +57,14 @@ class _WebState extends State<WebDialog> {
               children: [
                 Container(
                     padding: EdgeInsets.all(5),
-                    child: Center(
-                        child: Text(widget.title ?? title ?? "",
-                            style: Theme.of(context).textTheme.subtitle1))),
+                    child: Center(child: Text(widget.title ?? title ?? "", style: Theme.of(context).textTheme.subtitle1))),
                 Container(
                     height: 4,
                     child: show
                         ? LinearProgressIndicator(
                             value: progress,
                             backgroundColor: Colors.transparent,
-                            valueColor: AlwaysStoppedAnimation(
-                                Theme.of(context).primaryColor),
+                            valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
                           )
                         : null),
                 Expanded(
@@ -98,14 +96,12 @@ class _WebState extends State<WebDialog> {
                 Visibility(
                   visible: widget.auth,
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 10, left: 16, right: 16),
+                    padding: const EdgeInsets.only(bottom: 10, left: 16, right: 16),
                     child: Row(
                       children: [
                         Expanded(
                           child: ColorFiltered(
-                            colorFilter: ColorFilter.mode(
-                                Color(0xFF999999), BlendMode.srcIn),
+                            colorFilter: ColorFilter.mode(Color(0xFF999999), BlendMode.srcIn),
                             child: OutlinedButton(
                                 onPressed: () {
                                   if (Navigator.canPop(context)) {
@@ -125,10 +121,7 @@ class _WebState extends State<WebDialog> {
                                         }
                                       }
                                     : null,
-                                child: Text("agree".tr +
-                                    (_downTime.value == 0
-                                        ? ""
-                                        : "(${_downTime.value.toInt()}S)")))))
+                                child: Text("agree".tr + (_downTime.value == 0 ? "" : "(${_downTime.value.toInt()}S)")))))
                       ],
                     ),
                   ),

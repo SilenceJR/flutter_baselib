@@ -10,9 +10,10 @@ class AlertActionDialog extends StatelessWidget {
   final String positive;
   final VoidCallback? negativeCallback;
   final VoidCallback? positiveCallback;
+  final Color? backgroundColor;
 
   AlertActionDialog(
-      {this.title, this.message, this.positive = "", this.negative = "", this.negativeCallback, this.positiveCallback});
+      {this.title, this.message, this.positive = "", this.negative = "", this.negativeCallback, this.positiveCallback, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class AlertActionDialog extends StatelessWidget {
         child: Container(
             width: min(size.width, size.height) * 0.75,
             child: Card(
+              color: backgroundColor,
               child: Padding(
                 padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 20),
                 child: Column(

@@ -11,8 +11,9 @@ class ToastDialog extends StatelessWidget {
   final bool state;
   final String content;
   final VoidCallback? successCallback;
+  final Color? backgroundColor;
 
-  ToastDialog(this.state, this.content, {this.successCallback}) {
+  ToastDialog(this.state, this.content, {this.successCallback,this.backgroundColor}) {
     if (state) {
       Timer(Duration(milliseconds: 2500), () {
         Get.dismissDialog();
@@ -35,6 +36,7 @@ class ToastDialog extends StatelessWidget {
             child: Container(
           constraints: BoxConstraints(maxWidth: min(size.width, size.height) * 0.45),
           child: Card(
+            color: backgroundColor,
             child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,

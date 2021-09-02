@@ -9,10 +9,10 @@ class AgreeDialog extends StatefulWidget {
   final bool auth;
   final String rejectButton;
   final String agreeButton;
-
+  final Color? backgroundColor;
   final Widget? child;
 
-  AgreeDialog({this.title, this.auth = false, this.child, this.rejectButton = "reject", this.agreeButton = "agree"});
+  AgreeDialog({this.title, this.auth = false, this.child, this.rejectButton = "reject", this.agreeButton = "agree",this.backgroundColor});
 
   @override
   State<StatefulWidget> createState() => _AgreeDialogState();
@@ -52,6 +52,7 @@ class _AgreeDialogState extends State<AgreeDialog> {
         backgroundColor: Colors.transparent,
         body: Card(
           margin: EdgeInsets.zero,
+          color: widget.backgroundColor,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             child: Column(
