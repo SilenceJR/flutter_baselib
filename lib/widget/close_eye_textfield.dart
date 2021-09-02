@@ -92,7 +92,7 @@ class _State extends State<CloseEyeTextField> {
   Widget build(BuildContext context) {
     var _style = widget.style ?? TextStyle(fontSize: 14, color: Color(0xff333333));
     return Container(
-      height: widget.textFieldHeight ?? 36,
+      height: widget.textFieldHeight,
       decoration: widget.decoration,
       alignment: Alignment.center,
       margin: widget.decorationMargin,
