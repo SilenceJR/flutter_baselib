@@ -28,6 +28,7 @@ class CloseEyeTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
 
   final EdgeInsets? decorationPadding;
+  final EdgeInsets? decorationMargin;
 
   final FocusNode? focusNode;
 
@@ -57,6 +58,7 @@ class CloseEyeTextField extends StatefulWidget {
       this.onSubmitted,
       this.onChanged,
       this.decorationPadding,
+      this.decorationMargin,
       this.focusNode,
       this.textFieldHeight,
       this.style,
@@ -93,6 +95,8 @@ class _State extends State<CloseEyeTextField> {
       height: widget.textFieldHeight ?? 36,
       decoration: widget.decoration,
       alignment: Alignment.center,
+      margin: widget.decorationMargin,
+      padding: widget.decorationPadding,
       child: Row(
         textBaseline: widget.textBaseline,
         crossAxisAlignment: widget.crossAxisAlignment,
