@@ -21,7 +21,7 @@ class LoadingDialog extends StatelessWidget {
     }
   }
 
-  LoadingDialog(this.content, {this.outsideDismiss = false, this.onBackDismiss = false,this.backgroundColor});
+  LoadingDialog(this.content, {this.outsideDismiss = false, this.onBackDismiss = false, this.backgroundColor});
 
   final String? content;
   final bool outsideDismiss;
@@ -50,7 +50,7 @@ class LoadingDialog extends StatelessWidget {
               width: size,
               height: size,
               child: Card(
-                color: backgroundColor ?? Colors.grey.withOpacity(0.8),
+                color: backgroundColor ?? DialogTheme.of(context).backgroundColor,
                 child: Container(
                   padding: EdgeInsets.all(10),
                   child: Column(

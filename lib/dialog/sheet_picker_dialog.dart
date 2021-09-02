@@ -10,8 +10,9 @@ class BottomSheetPickerDialog extends StatefulWidget {
   final List<Widget> children;
   final ValueChanged<int> itemSelected;
   final int initSelect;
+  final Color? backgroundColor;
 
-  BottomSheetPickerDialog(this.children, this.itemSelected, {this.initSelect = 0});
+  BottomSheetPickerDialog(this.children, this.itemSelected, {this.initSelect = 0, this.backgroundColor});
 }
 
 class _State<T> extends State<BottomSheetPickerDialog> {
@@ -32,6 +33,7 @@ class _State<T> extends State<BottomSheetPickerDialog> {
       height: 250,
       child: Card(
         margin: EdgeInsets.zero,
+        color: widget.backgroundColor ?? DialogTheme.of(context).backgroundColor,
         shape: RoundedRectangleBorder(),
         child: Column(
           children: [

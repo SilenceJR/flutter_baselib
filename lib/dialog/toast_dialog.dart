@@ -12,8 +12,9 @@ class ToastDialog extends StatelessWidget {
   final String content;
   final VoidCallback? successCallback;
   final Color? backgroundColor;
+  final TextStyle? textStyle;
 
-  ToastDialog(this.state, this.content, {this.successCallback,this.backgroundColor}) {
+  ToastDialog(this.state, this.content, {this.successCallback, this.backgroundColor, this.textStyle}) {
     if (state) {
       Timer(Duration(milliseconds: 2500), () {
         Get.dismissDialog();
@@ -36,7 +37,7 @@ class ToastDialog extends StatelessWidget {
             child: Container(
           constraints: BoxConstraints(maxWidth: min(size.width, size.height) * 0.45),
           child: Card(
-            color: backgroundColor,
+            color: backgroundColor ?? DialogTheme.of(context).backgroundColor,
             child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,8 +46,7 @@ class ToastDialog extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: DecoratedBox(
-                      decoration:
-                          BoxDecoration(shape: BoxShape.circle, color: state ? Colors.green : Color(0xff666666)),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: state ? Colors.green : Color(0xff666666)),
                       child: SizedBox(
                         width: 40,
                         height: 40,
@@ -57,8 +57,7 @@ class ToastDialog extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(bottom: 20, top: 10),
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child:
-                        Center(child: Text(content, style: TextStyle(fontSize: 14, color: Color(0xff333333)))),
+                    child: Center(child: Text(content, style: textStyle ?? TextStyle(fontSize: 14, color: Color(0xff333333)))),
                   )
                 ]),
           ),

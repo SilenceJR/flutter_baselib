@@ -49,7 +49,7 @@ class _WebState extends State<WebDialog> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Card(
-          color: widget.backgroundColor,
+          color: widget.backgroundColor ?? DialogTheme.of(context).backgroundColor,
           margin: EdgeInsets.zero,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),

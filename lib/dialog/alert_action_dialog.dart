@@ -24,7 +24,7 @@ class AlertActionDialog extends StatelessWidget {
         child: Container(
             width: min(size.width, size.height) * 0.75,
             child: Card(
-              color: backgroundColor,
+              color: backgroundColor ?? DialogTheme.of(context).backgroundColor,
               child: Padding(
                 padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 20),
                 child: Column(
@@ -96,13 +96,13 @@ class AlertActionDialog extends StatelessWidget {
     return DefaultTextStyle(
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
-        style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w500),
+        style: DialogTheme.of(context).titleTextStyle ?? Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w500),
         child: Container(padding: const EdgeInsets.all(5.0), alignment: Alignment.center, child: title));
   }
 
   _getMessage(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyText2!,
+      style: DialogTheme.of(context).contentTextStyle ?? Theme.of(context).textTheme.bodyText2!,
       child: Container(padding: const EdgeInsets.all(5.0), alignment: Alignment.center, child: message),
     );
   }

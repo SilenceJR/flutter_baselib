@@ -12,7 +12,7 @@ class AgreeDialog extends StatefulWidget {
   final Color? backgroundColor;
   final Widget? child;
 
-  AgreeDialog({this.title, this.auth = false, this.child, this.rejectButton = "reject", this.agreeButton = "agree",this.backgroundColor});
+  AgreeDialog({this.title, this.auth = false, this.child, this.rejectButton = "reject", this.agreeButton = "agree", this.backgroundColor});
 
   @override
   State<StatefulWidget> createState() => _AgreeDialogState();
@@ -52,12 +52,14 @@ class _AgreeDialogState extends State<AgreeDialog> {
         backgroundColor: Colors.transparent,
         body: Card(
           margin: EdgeInsets.zero,
-          color: widget.backgroundColor,
+          color: widget.backgroundColor ?? DialogTheme.of(context).backgroundColor,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             child: Column(
               children: [
-                Container(padding: EdgeInsets.all(5), child: Center(child: Text(widget.title ?? title ?? "", style: Theme.of(context).textTheme.subtitle1))),
+                Container(
+                    padding: EdgeInsets.all(5),
+                    child: Center(child: Text(widget.title ?? title ?? "", style: Theme.of(context).textTheme.subtitle1))),
                 Expanded(child: Container(child: widget.child)),
                 Visibility(
                   visible: widget.auth,
