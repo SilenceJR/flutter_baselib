@@ -6,14 +6,13 @@ class AlertActionDialog extends StatelessWidget {
   final Widget? title;
   final Widget? message;
 
-  final String negative;
-  final String positive;
+  final Widget? negative;
+  final Widget? positive;
   final VoidCallback? negativeCallback;
   final VoidCallback? positiveCallback;
   final Color? backgroundColor;
 
-  AlertActionDialog(
-      {this.title, this.message, this.positive = "", this.negative = "", this.negativeCallback, this.positiveCallback, this.backgroundColor});
+  AlertActionDialog({this.title, this.message, this.positive, this.negative, this.negativeCallback, this.positiveCallback, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -44,52 +43,18 @@ class AlertActionDialog extends StatelessWidget {
 
   _buildOption(BuildContext context) {
     var list = <Widget>[];
-    if (negative.isNotEmpty) {
-      list.add(Expanded(
-        flex: 1,
-        child: Container(
-          height: 38,
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          child: OutlinedButton(
-              onPressed: () {
-                if (null != negativeCallback) {
-                  negativeCallback?.call();
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-              child: Text(negative, style: TextStyle(fontSize: 14))),
-        ),
-      ));
+    if (null != negative) {
+      list.add(Expanded(flex: 1, child: Container(height: 38, margin: EdgeInsets.symmetric(horizontal: 10), child: negative)));
     }
-    if (positive.isNotEmpty) {
-      list.add(Expanded(
-        flex: 1,
-        child: Container(
-          height: 38,
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          child: ElevatedButton(
-              onPressed: () {
-                if (null != positiveCallback) {
-                  positiveCallback?.call();
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-              child: Text(positive, style: TextStyle(color: Colors.white, fontSize: 14))),
-        ),
-      ));
+    if (null != positive) {
+      list.add(Expanded(flex: 1, child: Container(height: 38, margin: EdgeInsets.symmetric(horizontal: 10), child: positive)));
     }
     return Visibility(
         visible: list.isNotEmpty,
         child: Container(
             height: 40,
             margin: EdgeInsets.only(top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: list,
-            )));
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: list)));
   }
 
   _getTitle(BuildContext context) {
