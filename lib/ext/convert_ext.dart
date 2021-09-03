@@ -58,32 +58,18 @@ extension MapExt on Map {
     return defValue ?? (noNull ? 0 : null);
   }
 
-  T? getObject<T>(dynamic key, {required T? Function(dynamic value) decoder}) {
+  T? getObject<T>(dynamic key, {T? Function(dynamic value)? decoder}) {
     var value = this[key];
     if (null != value) {
-      decoder.call(value);
-    }
-    return null;
-  }
-
-  List<T>? getListObject<T>(dynamic key, {required T Function(dynamic value) decoder}) {
-    var value = this[key];
-    if (null != value) {
-      if (value is List) {
-        return value.map((e) => decoder.call(value)).toList();
-      } else {
-        if (value is String) {
-          var decode = jsonDecode(value);
-          if (decode is List) {
-            return decode.map((e) => decoder.call(value)).toList();
-          }
-        }
-        return null;
+      if (value is T) {
+        return value;
       }
+      return decoder?.call(value);
     }
     return null;
   }
 }
+
 tryCatch(Function function) {
   try {
     function.call();
