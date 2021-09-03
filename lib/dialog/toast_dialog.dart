@@ -57,7 +57,7 @@ class ToastDialog extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(bottom: 20, top: 10),
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Center(child: Text(content, style: textStyle ?? TextStyle(fontSize: 14, color: Color(0xff333333)))),
+                    child: Center(child: Text(content, style: textStyle ?? Theme.of(context).textTheme.bodyText2)),
                   )
                 ]),
           ),
