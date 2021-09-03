@@ -8,11 +8,9 @@ class AlertActionDialog extends StatelessWidget {
 
   final Widget? negative;
   final Widget? positive;
-  final VoidCallback? negativeCallback;
-  final VoidCallback? positiveCallback;
   final Color? backgroundColor;
 
-  AlertActionDialog({this.title, this.message, this.positive, this.negative, this.negativeCallback, this.positiveCallback, this.backgroundColor});
+  AlertActionDialog({this.title, this.message, this.positive, this.negative, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
