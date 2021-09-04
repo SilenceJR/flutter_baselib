@@ -12,31 +12,24 @@ class CloseEyeTextField extends StatefulWidget {
   //closeIcon
   final Widget? suffixIcon;
   final Widget? prefixIcon;
-
   final bool? obscureText;
-
   final TextEditingController controller;
   final List<TextInputFormatter>? inputFormatters;
   final Decoration? decoration;
   final Iterable<String>? autofillHints;
-
   final TextInputAction? textInputAction;
-
   final TextInputType? keyboardType;
-
   final ValueChanged<String>? onSubmitted;
   final ValueChanged<String>? onChanged;
-
   final EdgeInsets? decorationPadding;
   final EdgeInsets? decorationMargin;
-
   final FocusNode? focusNode;
-
   final double? textFieldHeight;
   final TextBaseline? textBaseline;
   final CrossAxisAlignment crossAxisAlignment;
   final TextStyle? style;
   final TextStyle? hintStyle;
+  final TextAlign? textAlign;
   final bool autofocus;
   final bool readOnly;
 
@@ -63,6 +56,7 @@ class CloseEyeTextField extends StatefulWidget {
       this.textFieldHeight,
       this.style,
       this.hintStyle,
+      this.textAlign,
       this.autofocus = false,
       this.textBaseline,
       this.crossAxisAlignment = CrossAxisAlignment.center});
@@ -117,7 +111,7 @@ class _State extends State<CloseEyeTextField> {
               autofillHints: widget.autofillHints,
               onSubmitted: widget.onSubmitted,
               onChanged: widget.onChanged,
-              textAlign: TextAlign.start,
+              textAlign: widget.textAlign ?? TextAlign.start,
               textInputAction: widget.textInputAction ?? TextInputAction.done,
               obscureText: _obscureText,
               inputFormatters: widget.inputFormatters,
