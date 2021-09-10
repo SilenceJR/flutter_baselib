@@ -70,8 +70,7 @@ class _InputCodeState extends State<InputCodeWidget> {
 
   _getInputKeyBoard(BuildContext context) {
     return Ink(
-      color: Color(0xffcccccc),
-      decoration: BoxDecoration(color: Theme.of(context).cardColor, border: Border.all(color: Color(0xffcccccc), width: 0.5)),
+      decoration: BoxDecoration(color: Color(0xffcccccc), border: Border.all(color: Color(0xffcccccc), width: 0.5)),
       child: GridView.count(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
