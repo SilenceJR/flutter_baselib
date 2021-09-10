@@ -23,19 +23,13 @@ class _InputCodeState extends State<InputCodeWidget> {
     return Container(
       width: double.maxFinite,
       child: Material(
-        textStyle: TextStyle(fontSize: 20, color: Colors.black87),
         shape: const RoundedRectangleBorder(),
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-                child: Text(
-                  widget.title ?? "",
-                  style: TextStyle(fontSize: 16),
-                ),
-                margin: EdgeInsets.only(top: 10)),
+            Container(child: Text(widget.title ?? "", style: Theme.of(context).textTheme.subtitle1), margin: EdgeInsets.only(top: 10)),
             _getInputCodeView(context),
             _getInputKeyBoard(context)
           ],
@@ -46,12 +40,8 @@ class _InputCodeState extends State<InputCodeWidget> {
 
   _getInputCodeView(BuildContext context) {
     return Container(
-      color: Colors.white,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _getCodeViewList(context),
-      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: _getCodeViewList(context)),
     );
   }
 
@@ -67,8 +57,8 @@ class _InputCodeState extends State<InputCodeWidget> {
           child: Text(
               inputChar.length > i
                   ? widget.showShade
-                  ? widget.shade
-                  : inputChar[i]
+                      ? widget.shade
+                      : inputChar[i]
                   : "",
               style: TextStyle(fontSize: widget.showShade ? 30 : 20, fontWeight: widget.showShade ? FontWeight.bold : FontWeight.normal)),
         ),
@@ -79,7 +69,7 @@ class _InputCodeState extends State<InputCodeWidget> {
 
   _getInputKeyBoard(BuildContext context) {
     return Ink(
-      decoration: BoxDecoration(color: Color(0xffcccccc), border: Border.all(color: Color(0xffcccccc), width: 0.5)),
+      decoration: BoxDecoration(border: Border.all(color: Color(0xffcccccc), width: 0.5)),
       child: GridView.count(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
@@ -103,12 +93,9 @@ class _InputCodeState extends State<InputCodeWidget> {
   _getItemKey(BuildContext context, int index) {
     switch (index) {
       case 10:
-        return Container(
-          color: Colors.white,
-        );
+        return SizedBox();
       case 12: //delete
         return Ink(
-          color: Colors.white,
           child: InkWell(
             onTap: () {
               setState(() {
@@ -124,7 +111,6 @@ class _InputCodeState extends State<InputCodeWidget> {
         );
       default:
         return Ink(
-          color: Colors.white,
           child: InkWell(
             onTap: () {
               setState(() {
