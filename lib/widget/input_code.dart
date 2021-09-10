@@ -32,6 +32,7 @@ class _InputCodeState extends State<InputCodeWidget> {
           children: [
             Container(child: Text(widget.title ?? "", style: Theme.of(context).textTheme.subtitle1), margin: EdgeInsets.only(top: 10)),
             _getInputCodeView(context),
+            Divider(),
             _getInputKeyBoard(context)
           ],
         ),
@@ -46,7 +47,7 @@ class _InputCodeState extends State<InputCodeWidget> {
     );
   }
 
-  _getCodeViewList(BuildContext context) {
+  Widget _getCodeViewList(BuildContext context) {
     var d = (MediaQuery.of(context).size.width - 10 * (widget.length + 1)) / 6.0;
     var list = <Widget>[];
     for (int i = 0; i < widget.length; i++) {
