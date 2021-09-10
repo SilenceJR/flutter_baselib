@@ -22,10 +22,10 @@ class _InputCodeState extends State<InputCodeWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      padding: EdgeInsets.only(bottom: 30),
+      color: Theme.of(context).cardColor,
+      padding: EdgeInsets.only(bottom: 20),
       child: Material(
         shape: const RoundedRectangleBorder(),
-        color: Theme.of(context).cardColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
@@ -70,7 +70,7 @@ class _InputCodeState extends State<InputCodeWidget> {
 
   _getInputKeyBoard(BuildContext context) {
     return Ink(
-      decoration: BoxDecoration(color: Color(0xffcccccc), border: Border.all(color: Color(0xffcccccc), width: 0.5)),
+      decoration: BoxDecoration(border: Border.all(color: Color(0xffcccccc), width: 0.5)),
       child: GridView.count(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
