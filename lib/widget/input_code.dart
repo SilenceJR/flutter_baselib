@@ -47,7 +47,7 @@ class _InputCodeState extends State<InputCodeWidget> {
     );
   }
 
-  Widget _getCodeViewList(BuildContext context) {
+  List<Widget> _getCodeViewList(BuildContext context) {
     var d = (MediaQuery.of(context).size.width - 10 * (widget.length + 1)) / 6.0;
     var list = <Widget>[];
     for (int i = 0; i < widget.length; i++) {
