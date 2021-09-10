@@ -22,6 +22,7 @@ class _InputCodeState extends State<InputCodeWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
+      padding: EdgeInsets.only(bottom: 30),
       child: Material(
         shape: const RoundedRectangleBorder(),
         color: Theme.of(context).cardColor,
@@ -69,7 +70,8 @@ class _InputCodeState extends State<InputCodeWidget> {
 
   _getInputKeyBoard(BuildContext context) {
     return Ink(
-      decoration: BoxDecoration(border: Border.all(color: Color(0xffcccccc), width: 0.5)),
+      color: Color(0xffcccccc),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, border: Border.all(color: Color(0xffcccccc), width: 0.5)),
       child: GridView.count(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
@@ -97,17 +99,14 @@ class _InputCodeState extends State<InputCodeWidget> {
       case 12: //delete
         return Ink(
           child: InkWell(
-            onTap: () {
-              setState(() {
-                if (inputChar.isNotEmpty) {
-                  inputChar.removeLast();
-                }
-              });
-            },
-            child: Center(
-              child: Icon(Icons.backspace_outlined),
-            ),
-          ),
+              onTap: () {
+                setState(() {
+                  if (inputChar.isNotEmpty) {
+                    inputChar.removeLast();
+                  }
+                });
+              },
+              child: Center(child: Icon(Icons.backspace_outlined))),
         );
       default:
         return Ink(
@@ -122,7 +121,7 @@ class _InputCodeState extends State<InputCodeWidget> {
                 }
               });
             },
-            child: Center(child: Text(index == 11 ? "0" : "$index")),
+            child: Center(child: Text(index == 11 ? "0" : "$index", style: Theme.of(context).textTheme.subtitle1)),
           ),
         );
     }
