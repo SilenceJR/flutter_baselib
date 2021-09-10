@@ -10,18 +10,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  #  国际化
   flutter_localizations:
     sdk: flutter
 
   #https://pub.dev/packages/get
   get: ^4.3.8
   get_storage: ^2.0.3
-  flutter_html: ^2.1.1
+  flutter_html: ^2.1.2
   package_info: ^2.0.2
   flutter_native_image: ^0.0.6+1
-  wechat_assets_picker: ^6.0.6
-  wechat_camera_picker: ^2.4.0
+  wechat_assets_picker: ^6.1.2
+  wechat_camera_picker: ^2.4.1
   image_gallery_saver: ^1.6.9
   cached_network_image: ^3.1.0
   permission_handler: ^8.1.4+2
