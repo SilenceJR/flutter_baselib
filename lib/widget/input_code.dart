@@ -70,7 +70,8 @@ class _InputCodeState extends State<InputCodeWidget> {
 
   _getInputKeyBoard(BuildContext context) {
     return Ink(
-      decoration: BoxDecoration(border: Border.all(color: Color(0xffcccccc), width: 0.5)),
+      color: Color(0xffcccccc),
+      // decoration: BoxDecoration(border: Border.all(color: Color(0xffcccccc), width: 0.5)),
       child: GridView.count(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
@@ -83,15 +84,15 @@ class _InputCodeState extends State<InputCodeWidget> {
     );
   }
 
-  _getKeyList(BuildContext context) {
+  List<Widget> _getKeyList(BuildContext context) {
     var list = <Widget>[];
     for (int i = 1; i < 13; i++) {
-      list.add(_getItemKey(context, i));
+      list.add(DecoratedBox(decoration: BoxDecoration(color: Theme.of(context).cardColor), child: _getItemKey(context, i)));
     }
     return list;
   }
 
-  _getItemKey(BuildContext context, int index) {
+  Widget _getItemKey(BuildContext context, int index) {
     switch (index) {
       case 10:
         return SizedBox();
