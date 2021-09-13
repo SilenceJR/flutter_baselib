@@ -1,6 +1,6 @@
 name: baselib
 description: dev common lib
-version: 0.0.9
+version: 0.1.1
 homepage: https://gitee.com/Mocaris/flutter-baselib.git
 
 environment:
@@ -23,14 +23,14 @@ dependencies:
   wechat_camera_picker: ^2.4.1
   image_gallery_saver: ^1.6.9
   cached_network_image: ^3.1.0
-  permission_handler: ^8.1.4+2
+  permission_handler: ^8.1.6
   common_utils: ^2.0.2
   flutter_swiper_null_safety: ^1.0.2
   qr_code_scanner: ^0.5.2
   qr_flutter: ^4.0.0
   pull_to_refresh: ^2.0.0
   cupertino_icons: ^1.0.3
-  webview_flutter: ^2.0.12
+  webview_flutter: ^2.0.13
   url_launcher: ^6.0.9
   dotted_line: ^3.0.0
 
