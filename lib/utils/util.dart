@@ -61,7 +61,7 @@ class Utils {
     RenderRepaintBoundary renderObject = context.findRenderObject() as RenderRepaintBoundary;
     var image = await renderObject.toImage(pixelRatio: MediaQuery.of(context).devicePixelRatio);
     var byteData = (await image.toByteData(format: ImageByteFormat.png))!.buffer.asUint8List();
-    var res = await ImageSave.saveImage(byteData, "image_${DateTime.now().second}");
+    var res = await ImageSave.saveImage(byteData, "image_${DateTime.now().second}.jpg");
     // await ImageGallerySaver.saveImage(byteData, quality: 100);
     done?.call(res==true);
   }
