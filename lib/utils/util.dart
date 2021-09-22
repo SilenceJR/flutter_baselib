@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_save/image_save.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -52,7 +52,7 @@ class Utils {
   }
 
   ///RepaintBoundary
-  static save2Gallery(BuildContext context, {Function? done, Function? error}) async {
+  static save2Gallery(BuildContext context, {Function(bool res)? done, Function()? error}) async {
     var permission = await Permission.storage.request();
     if (!permission.isGranted) {
       error?.call();
@@ -61,7 +61,8 @@ class Utils {
     RenderRepaintBoundary renderObject = context.findRenderObject() as RenderRepaintBoundary;
     var image = await renderObject.toImage(pixelRatio: MediaQuery.of(context).devicePixelRatio);
     var byteData = (await image.toByteData(format: ImageByteFormat.png))!.buffer.asUint8List();
-    await ImageGallerySaver.saveImage(byteData, quality: 100);
-    done?.call();
+    var res = await ImageSave.saveImage(byteData, "image_${DateTime.now().second}");
+    // await ImageGallerySaver.saveImage(byteData, quality: 100);
+    done?.call(res==true);
   }
 }
