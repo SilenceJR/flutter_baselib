@@ -28,15 +28,11 @@ class Utils {
   static void appMarket({required String applicationId, required String iOSAppId}) async {
     if (Platform.isAndroid) {
       var url = "market://details?id=$applicationId";
-      if (await canLaunch(url)) {
-        launch(url);
-      }
+      launch(url);
     }
     if (Platform.isIOS) {
       var url = "itms-apps://itunes.apple.com/app/id$iOSAppId";
-      if (await canLaunch(url)) {
-        launch(url);
-      }
+      launch(url);
     }
   }
 
