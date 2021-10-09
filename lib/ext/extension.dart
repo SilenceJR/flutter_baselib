@@ -81,8 +81,8 @@ extension Alert on GetInterface {
   }
 
   dismissDialog<T>({T? result, bool closeOverlays = false, bool canPop = true, int? id}) {
-    if ((Get.isDialogOpen ?? false) || (Get.isBottomSheetOpen ?? false)) {
-      Get.back(result: result, closeOverlays: closeOverlays, canPop: (Get.routing.isDialog ?? false) || (Get.routing.isBottomSheet ?? false), id: id);
+    if (Get.isOverlaysOpen) {
+      Get.back(result: result, closeOverlays: closeOverlays, id: id);
     }
   }
 }
