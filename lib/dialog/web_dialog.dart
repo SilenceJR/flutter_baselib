@@ -9,8 +9,11 @@ class WebDialog extends StatefulWidget {
   final String? title;
   final bool auth;
   final Color? backgroundColor;
+  final int time;
+  final String? reject;
+  final String? agree;
 
-  WebDialog(this.url, {this.title, this.auth = false, this.backgroundColor});
+  WebDialog(this.url, {this.title, this.auth = false, this.backgroundColor, this.time = 5000, this.reject, this.agree});
 
   @override
   State<StatefulWidget> createState() => _WebState();
@@ -20,16 +23,18 @@ class _WebState extends State<WebDialog> {
   bool show = false;
   double progress = 0.0;
 
-  final _downTime = 5000.0.obs;
+  final _downTime = 5000.obs;
 
   WebViewController? controller;
   String? title = "";
-  final _timer = TimerUtil(mInterval: 1000, mTotalTime: 5000);
+  late TimerUtil _timer;
 
   @override
   void initState() {
     super.initState();
-    _timer.setOnTimerTickCallback((millisUntilFinished) => _downTime.value = millisUntilFinished / 1000);
+    _downTime.value = widget.time;
+    _timer = TimerUtil(mInterval: 1000, mTotalTime: widget.time);
+    _timer.setOnTimerTickCallback((millisUntilFinished) => _downTime.value = millisUntilFinished ~/ 1000);
     if (widget.auth) {
       _timer.startCountDown();
     }
@@ -108,7 +113,7 @@ class _WebState extends State<WebDialog> {
                                     Navigator.pop(context, false);
                                   }
                                 },
-                                child: Text("reject".tr)),
+                                child: Text(widget.reject ?? "")),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -121,7 +126,7 @@ class _WebState extends State<WebDialog> {
                                         }
                                       }
                                     : null,
-                                child: Text("agree".tr + (_downTime.value == 0 ? "" : "(${_downTime.value.toInt()}S)")))))
+                                child: Text(widget.agree ?? "" + (_downTime.value == 0 ? "" : "(${_downTime.value.toInt()}S)")))))
                       ],
                     ),
                   ),
