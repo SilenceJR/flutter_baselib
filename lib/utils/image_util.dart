@@ -11,11 +11,7 @@ import 'permissionutil.dart';
 import 'package:baselib/ext/ext.dart';
 
 class GetImageUtil {
-  static GetImageUtil? _instance;
-
-  static GetImageUtil get instance => _instance ??= GetImageUtil();
-
-  getUploadImage(ValueChanged<File> valueChanged,
+  static pickImage(ValueChanged<File> valueChanged,
       {Text? title, int maxSelect = 1, bool camera = true, int quality = 80, int targetWidth = 0, int targetHeight = 0}) {
     var actions = <CupertinoActionSheetAction>[];
     if (camera) {
