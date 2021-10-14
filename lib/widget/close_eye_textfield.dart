@@ -133,7 +133,7 @@ class _State extends State<CloseEyeTextField> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(
-        onTap: () => widget.controller.clear(),
+        onTap: () => widget.controller.text="",
         child: Icon(Icons.cancel, size: 20, color: Colors.grey),
       ),
     );
