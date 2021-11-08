@@ -13,14 +13,6 @@ extension WidgetExt on Widget {
     );
   }
 
-  Widget oval() {
-    return ClipOval(child: this);
-  }
-
-  Widget roundRect(BorderRadius radius) {
-    return ClipRRect(borderRadius: radius, child: this);
-  }
-
   Widget elevation(double elevation, {Color? color, Color? shadowColor, BorderRadius? borderRadius}) {
     return Material(
         elevation: elevation, color: color, shadowColor: shadowColor, borderRadius: borderRadius, child: this);
