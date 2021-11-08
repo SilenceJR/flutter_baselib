@@ -14,8 +14,14 @@ extension Alert on GetInterface {
       Curve? transitionCurve,
       String? name,
       RouteSettings? routeSettings,
-      bool dismissLast = true}) {
-    Utils.hideKeyboard();
+      bool dismissLast = true,
+      bool hideKeyboard = true}) {
+    if (hideKeyboard) {
+      var overlayContext = Get.overlayContext;
+      if (null != overlayContext) {
+        Utils.hideKeyboardUnfocus(overlayContext);
+      }
+    }
     if (dismissLast) {
       Get.dismissDialog();
     }
@@ -30,7 +36,7 @@ extension Alert on GetInterface {
         routeSettings: routeSettings);
   }
 
-  Future<T?> showBottomSheet<T>(Widget bottomsheet,
+  Future<T?> showBottomSheet<T>(Widget bottomSheet,
       {Color? backgroundColor,
       double? elevation,
       bool persistent = true,
@@ -45,12 +51,18 @@ extension Alert on GetInterface {
       RouteSettings? settings,
       Duration? enterBottomSheetDuration,
       Duration? exitBottomSheetDuration,
-      bool dismissLast = true}) {
-    Utils.hideKeyboard();
+      bool dismissLast = true,
+      bool hideKeyboard = true}) {
+    if (hideKeyboard) {
+      var overlayContext = Get.overlayContext;
+      if (null != overlayContext) {
+        Utils.hideKeyboardUnfocus(overlayContext);
+      }
+    }
     if (dismissLast) {
       Get.dismissDialog();
     }
-    return Get.bottomSheet(bottomsheet,
+    return Get.bottomSheet(bottomSheet,
         backgroundColor: backgroundColor,
         elevation: elevation,
         persistent: persistent,
@@ -67,15 +79,16 @@ extension Alert on GetInterface {
         exitBottomSheetDuration: exitBottomSheetDuration);
   }
 
-  showToast(String content, {TGravity gravity = TGravity.CENTER, int duration = Toast.SHORT_LENGTH}) {
-    Toast.show(Get.overlayContext!, content, gravity: gravity, duration: duration);
+  ///buildContext is overlayContext
+  showToast(String content, {BuildContext? buildContext, TGravity gravity = TGravity.CENTER, int duration = Toast.SHORT_LENGTH}) {
+    Toast.show(buildContext ?? Get.overlayContext!, content, gravity: gravity, duration: duration);
   }
 
-  Future<T?> showToastDialog<T>(bool state, String content, {VoidCallback? successCallback, bool dismissLast = true}) {
-    return showDialog(ToastDialog(state, content, successCallback: successCallback), dismissLast: dismissLast);
+  Future<T?> showToastDialog<T>(bool state, String content, {bool dismissLast = true}) {
+    return showDialog(ToastDialog(state, content), dismissLast: dismissLast);
   }
 
-  Future<void> showLoadingDialog({String? content, bool outsideDismiss = false, bool onBackDismiss = true, bool dismissLast = true}) {
+  Future<T?> showLoadingDialog<T>({String? content, bool outsideDismiss = false, bool onBackDismiss = true, bool dismissLast = true}) {
     return showDialog(LoadingDialog(content, outsideDismiss: outsideDismiss, onBackDismiss: onBackDismiss),
         barrierDismissible: false, dismissLast: dismissLast);
   }

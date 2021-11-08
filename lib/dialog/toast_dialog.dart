@@ -10,15 +10,13 @@ import '../ext/extension.dart';
 class ToastDialog extends StatelessWidget {
   final bool state;
   final String content;
-  final VoidCallback? successCallback;
   final Color? backgroundColor;
   final TextStyle? textStyle;
 
-  ToastDialog(this.state, this.content, {this.successCallback, this.backgroundColor, this.textStyle}) {
+  ToastDialog(this.state, this.content, {this.backgroundColor, this.textStyle}) {
     if (state) {
       Timer(Duration(milliseconds: 2500), () {
         Get.dismissDialog();
-        successCallback?.call();
       });
     }
   }
