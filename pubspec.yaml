@@ -1,6 +1,6 @@
 name: baselib
 description: dev common lib
-version: 0.1.7
+version: 0.1.8
 homepage: https://gitee.com/Mocaris/flutter-baselib.git
 
 environment:

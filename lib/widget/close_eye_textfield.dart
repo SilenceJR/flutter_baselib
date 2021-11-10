@@ -67,7 +67,7 @@ class CloseEyeTextField extends StatefulWidget {
 
 class _State extends State<CloseEyeTextField> {
   bool _obscureText = false;
-  FocusNode? _focusNode;
+  late FocusNode _focusNode;
   bool _hasFocus = false;
 
   @override
@@ -75,9 +75,9 @@ class _State extends State<CloseEyeTextField> {
     super.initState();
     _obscureText = widget.obscureText ?? (widget.showHideIcon && null == widget.suffixIcon);
     _focusNode = widget.focusNode ?? FocusNode();
-    _focusNode?.addListener(() {
+    _focusNode.addListener(() {
       setState(() {
-        _hasFocus = _focusNode!.hasFocus;
+        _hasFocus = _focusNode.hasFocus;
       });
     });
   }

@@ -9,3 +9,6 @@ export 'verify_code_underline.dart';
 export 'gradient_checkedbox.dart';
 export 'gradient_border_button.dart';
 export 'gradient_oval_checkedbox.dart';
+export 'shake_animate_widget.dart';
+export 'slide_verify_widget.dart';
+export 'popupmenu.dart';
