@@ -6,9 +6,9 @@ import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
+import '../ext/ext.dart';
 
 import 'permissionutil.dart';
-import 'package:baselib/ext/ext.dart';
 
 class GetImageUtil {
   static pickImage(ValueChanged<File> valueChanged,
