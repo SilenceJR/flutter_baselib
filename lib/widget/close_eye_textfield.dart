@@ -116,7 +116,9 @@ class _State extends State<CloseEyeTextField> {
               obscureText: _obscureText,
               inputFormatters: widget.inputFormatters,
               decoration: InputDecoration(
-                  hintStyle: widget.hintStyle ?? _style?.copyWith(color: Theme.of(context).hintColor),
+                  hintStyle: widget.hintStyle ??
+                      Theme.of(context).inputDecorationTheme.hintStyle ??
+                      _style?.copyWith(color: Theme.of(context).hintColor),
                   hintText: widget.hint,
                   isDense: true,
                   border: InputBorder.none),
