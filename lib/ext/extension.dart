@@ -14,16 +14,9 @@ extension Alert on GetInterface {
       Curve? transitionCurve,
       String? name,
       RouteSettings? routeSettings,
-      bool dismissLast = true,
       bool hideKeyboard = true}) {
     if (hideKeyboard) {
-      var overlayContext = Get.overlayContext;
-      if (null != overlayContext) {
-        Utils.hideKeyboardUnfocus(overlayContext);
-      }
-    }
-    if (dismissLast) {
-      Get.dismissDialog();
+      hideKeyBoard();
     }
     return Get.dialog(widget,
         barrierDismissible: barrierDismissible,
@@ -51,16 +44,9 @@ extension Alert on GetInterface {
       RouteSettings? settings,
       Duration? enterBottomSheetDuration,
       Duration? exitBottomSheetDuration,
-      bool dismissLast = true,
       bool hideKeyboard = true}) {
     if (hideKeyboard) {
-      var overlayContext = Get.overlayContext;
-      if (null != overlayContext) {
-        Utils.hideKeyboardUnfocus(overlayContext);
-      }
-    }
-    if (dismissLast) {
-      Get.dismissDialog();
+      hideKeyBoard();
     }
     return Get.bottomSheet(bottomSheet,
         backgroundColor: backgroundColor,
@@ -84,18 +70,39 @@ extension Alert on GetInterface {
     Toast.show(buildContext ?? Get.overlayContext!, content, gravity: gravity, duration: duration);
   }
 
-  Future<T?> showToastDialog<T>(bool state, String content, {bool dismissLast = true}) {
-    return showDialog(ToastDialog(state, content), dismissLast: dismissLast);
+  Future<T?> showToastDialog<T>(bool state, String content) {
+    return showDialog(ToastDialog(state, content));
   }
 
-  Future<T?> showLoadingDialog<T>({String? content, bool outsideDismiss = false, bool onBackDismiss = true, bool dismissLast = true}) {
-    return showDialog(LoadingDialog(content, outsideDismiss: outsideDismiss, onBackDismiss: onBackDismiss),
-        barrierDismissible: false, dismissLast: dismissLast);
+  Future<T?> showLoadingDialog<T>({String? content, bool outsideDismiss = false, bool onBackDismiss = true}) {
+    return showDialog(LoadingDialog(content, outsideDismiss: outsideDismiss, onBackDismiss: onBackDismiss), barrierDismissible: false);
   }
+}
 
-  dismissDialog<T>({T? result, bool closeOverlays = false, bool canPop = true, int? id}) {
-    if (Get.isOverlaysOpen) {
-      Get.back(result: result, closeOverlays: closeOverlays, id: id);
+extension GetExt on GetInterface {
+  void hideKeyBoard() {
+    var overlayContext = Get.overlayContext;
+    if (null != overlayContext) {
+      Utils.hideKeyboardUnfocus(overlayContext);
     }
   }
+
+  ///关闭当前页面第一个弹窗  dialog or bottomSheet or snakeBar
+  dismissDialog<T>({T? result, int? id}) {
+    if (Get.isOverlaysOpen) {
+      Get.back<T>(result: result, closeOverlays: false, canPop: true, id: id);
+    }
+  }
+
+  ///关闭当前页面的 所有弹窗 包括 dialog bottomSheet snakeBar
+  dismissPagePopupDialogs() {
+    if (Get.isOverlaysOpen) {
+      navigator?.popUntil((route) {
+        return (Get.isOverlaysClosed);
+      });
+    }
+  }
+
+  ///关闭当前页面 包括 当前页面的 dialog  bottomSheet snakeBar
+  backPage<T>({T? result, bool canPop = true, int? id}) => Get.back(result: result, closeOverlays: true, canPop: canPop, id: id);
 }
