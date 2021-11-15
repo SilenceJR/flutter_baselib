@@ -33,23 +33,9 @@ class EmptyDataWidget extends StatelessWidget {
         : empty
             ? Container(
                 color: bgColor,
-                child: Column(
-                  children: [
-                    Expanded(
-                        flex: 6,
-                        child: Container(
-                          alignment: alignment ?? Alignment.center,
-                          constraints: BoxConstraints(
-                              maxWidth: constraints ? min(size.width, size.height) * 0.5 : double.infinity),
-                          child: tip,
-                        )),
-                    Expanded(
-                      child: Container(),
-                      flex: 4,
-                    ),
-                  ],
-                ),
-              )
+                alignment: alignment ?? Alignment.center,
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: constraints ? min(size.width, size.height) * 0.5 : double.infinity), child: tip))
             : child;
   }
 }
