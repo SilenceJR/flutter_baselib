@@ -80,22 +80,23 @@ extension Alert on GetInterface {
 }
 
 extension GetExt on GetInterface {
-  void hideKeyBoard() {
-    var overlayContext = Get.overlayContext;
-    if (null != overlayContext) {
-      Utils.hideKeyboardUnfocus(overlayContext);
+  ///关闭 键盘
+  hideKeyBoard([BuildContext? overlayContext]) {
+    var context = overlayContext ?? Get.overlayContext;
+    if (null != context) {
+      Utils.hideKeyboardUnfocus(context);
     }
   }
 
   ///关闭当前页面第一个弹窗  dialog or bottomSheet or snakeBar
-  dismissDialog<T>({T? result, int? id}) {
+  dismiss<T>({T? result, int? id}) {
     if (Get.isOverlaysOpen) {
       Get.back<T>(result: result, closeOverlays: false, canPop: true, id: id);
     }
   }
 
-  ///关闭当前页面的 所有弹窗 包括 dialog bottomSheet snakeBar
-  dismissPagePopupDialogs() {
+  ///关闭当前 所有弹窗 包括 dialog bottomSheet snakeBar
+  dismissAll() {
     if (Get.isOverlaysOpen) {
       navigator?.popUntil((route) {
         return (Get.isOverlaysClosed);

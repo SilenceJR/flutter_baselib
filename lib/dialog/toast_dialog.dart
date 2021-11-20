@@ -16,7 +16,7 @@ class ToastDialog extends StatelessWidget {
   ToastDialog(this.state, this.content, {this.backgroundColor, this.textStyle}) {
     if (state) {
       Timer(Duration(milliseconds: 2500), () {
-        Get.dismissDialog();
+        Get.dismiss();
       });
     }
   }

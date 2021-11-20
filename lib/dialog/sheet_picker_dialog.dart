@@ -40,10 +40,10 @@ class _State<T> extends State<BottomSheetPickerDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(onPressed: () => Get.dismissDialog(), child: Text("cancel".tr)),
+                TextButton(onPressed: () => Get.dismiss(), child: Text("cancel".tr)),
                 TextButton(
                     onPressed: () {
-                      Get.dismissDialog();
+                      Get.dismiss();
                       widget.itemSelected.call(_select);
                     },
                     child: Text("confirm".tr))
