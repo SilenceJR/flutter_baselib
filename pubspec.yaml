@@ -18,12 +18,12 @@ dependencies:
   get_storage: ^2.0.3
   package_info: ^2.0.2
   flutter_native_image: ^0.0.6+1
-  wechat_assets_picker: ^6.2.3
-  wechat_camera_picker: ^2.6.0
+  wechat_assets_picker: ^6.2.4
+  wechat_camera_picker: ^2.6.1
   image_gallery_saver: ^1.7.1
   permission_handler: ^8.3.0
   webview_flutter: ^2.3.1
-  url_launcher: ^6.0.14
+  url_launcher: ^6.0.15
   common_utils: ^2.0.2
 
 dev_dependencies:
