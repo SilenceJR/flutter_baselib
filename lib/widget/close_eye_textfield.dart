@@ -106,7 +106,6 @@ class _State extends State<CloseEyeTextField> {
       alignment: Alignment.center,
       margin: widget.decorationMargin,
       padding: widget.decorationPadding,
-      color: Colors.blue.withOpacity(0.3),
       child: Row(
         textBaseline: widget.textBaseline,
         crossAxisAlignment: widget.crossAxisAlignment,
