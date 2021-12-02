@@ -21,7 +21,33 @@ class CheckedBox extends StatelessWidget {
             decoration: BoxDecoration(
               shape: oval ? BoxShape.circle : BoxShape.rectangle,
               color: value ? checkColor ?? Theme.of(context).primaryColor : Colors.transparent,
-              border: Border.all(color: value ? checkColor ?? Theme.of(context).primaryColor : borderColor ?? Theme.of(context).primaryColor),
+              border:
+                  Border.all(color: value ? checkColor ?? Theme.of(context).primaryColor : borderColor ?? Theme.of(context).primaryColor),
             )));
+  }
+}
+
+class IconCheckedBox extends StatelessWidget {
+  final double size;
+  final Widget checkedIcon;
+  final Widget icon;
+  final bool value;
+  final Function(bool)? onChanged;
+
+  IconCheckedBox(
+      {Key? key,
+      this.size = 20,
+      this.value = false,
+      this.checkedIcon = const Icon(Icons.check_circle_outline),
+      this.icon = const Icon(Icons.circle_outlined),
+      this.onChanged})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => onChanged?.call(!value),
+        child: SizedBox(width: size, height: size, child: value ? checkedIcon : icon));
   }
 }
