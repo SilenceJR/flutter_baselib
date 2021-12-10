@@ -32,22 +32,17 @@ class IconCheckedBox extends StatelessWidget {
   final Widget checkedIcon;
   final Widget icon;
   final bool value;
-  final Function(bool)? onChanged;
 
   IconCheckedBox(
       {Key? key,
       this.size = 20,
       this.value = false,
       this.checkedIcon = const Icon(Icons.check_circle_outline),
-      this.icon = const Icon(Icons.circle_outlined),
-      this.onChanged})
+      this.icon = const Icon(Icons.circle_outlined)})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => onChanged?.call(!value),
-        child: SizedBox(width: size, height: size, child: value ? checkedIcon : icon));
+    return SizedBox(width: size, height: size, child: value ? checkedIcon : icon);
   }
 }
