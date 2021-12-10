@@ -18,7 +18,7 @@ class AlertActionDialog extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: Center(
-        child: Container(
+        child: SizedBox(
             width: min(size.width, size.height) * 0.75,
             child: Card(
               color: backgroundColor ?? DialogTheme.of(context).backgroundColor,
@@ -42,17 +42,14 @@ class AlertActionDialog extends StatelessWidget {
   _buildOption(BuildContext context) {
     var list = <Widget>[];
     if (null != negative) {
-      list.add(Expanded(flex: 1, child: Container(height: 38, margin: EdgeInsets.symmetric(horizontal: 10), child: negative)));
+      list.add(Expanded(flex: 1, child: Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: negative)));
     }
     if (null != positive) {
-      list.add(Expanded(flex: 1, child: Container(height: 38, margin: EdgeInsets.symmetric(horizontal: 10), child: positive)));
+      list.add(Expanded(flex: 1, child: Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: positive)));
     }
     return Visibility(
         visible: list.isNotEmpty,
-        child: Container(
-            height: 40,
-            margin: EdgeInsets.only(top: 10),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: list)));
+        child: Container(margin: EdgeInsets.only(top: 10), child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: list)));
   }
 
   _getTitle(BuildContext context) {
