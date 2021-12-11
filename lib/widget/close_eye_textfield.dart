@@ -38,34 +38,34 @@ class CloseEyeTextField extends StatefulWidget {
 
   CloseEyeTextField(
       {this.hint,
-        this.showClearIcon = true,
-        this.showHideIcon = false,
-        this.readOnly = false,
-        this.prefixIcon,
-        this.suffixIcon,
-        //  隐藏 文字 以 密码形式显示
-        this.obscureText,
-        this.controller,
-        this.inputFormatters,
-        this.decoration,
-        this.autofillHints,
-        this.textInputAction,
-        this.keyboardType,
-        this.onSubmitted,
-        this.onChanged,
-        this.decorationPadding,
-        this.decorationMargin,
-        this.focusNode,
-        this.textFieldHeight,
-        this.style,
-        this.hintStyle,
-        this.textAlign,
-        this.autofocus = false,
-        this.textBaseline,
-        this.cursorWidth,
-        this.cursorRadius,
-        this.centerVertical = true,
-        this.crossAxisAlignment = CrossAxisAlignment.center});
+      this.showClearIcon = true,
+      this.showHideIcon = false,
+      this.readOnly = false,
+      this.prefixIcon,
+      this.suffixIcon,
+      //  隐藏 文字 以 密码形式显示
+      this.obscureText,
+      this.controller,
+      this.inputFormatters,
+      this.decoration,
+      this.autofillHints,
+      this.textInputAction,
+      this.keyboardType,
+      this.onSubmitted,
+      this.onChanged,
+      this.decorationPadding,
+      this.decorationMargin,
+      this.focusNode,
+      this.textFieldHeight,
+      this.style,
+      this.hintStyle,
+      this.textAlign,
+      this.autofocus = false,
+      this.textBaseline,
+      this.cursorWidth,
+      this.cursorRadius,
+      this.centerVertical = true,
+      this.crossAxisAlignment = CrossAxisAlignment.center});
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -103,7 +103,8 @@ class _State extends State<CloseEyeTextField> {
         textWidthBasis: TextWidthBasis.longestLine,
         text: TextSpan(text: "", style: _style),
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        textDirection: TextDirection.ltr);
+        textDirection: TextDirection.ltr)
+      ..layout();
     return Container(
       height: widget.textFieldHeight,
       decoration: widget.decoration,
@@ -134,7 +135,7 @@ class _State extends State<CloseEyeTextField> {
                   textInputAction: widget.textInputAction ?? TextInputAction.done,
                   obscureText: _obscureText,
                   inputFormatters: widget.inputFormatters,
-                  cursorHeight: _textPainter.preferredLineHeight,
+                  cursorHeight: _textPainter.height,
                   decoration: InputDecoration(
                       hintStyle: widget.hintStyle ??
                           (Theme.of(context).inputDecorationTheme.hintStyle ?? _style)?.copyWith(color: Theme.of(context).hintColor),
@@ -143,11 +144,11 @@ class _State extends State<CloseEyeTextField> {
                       isCollapsed: true,
                       contentPadding: (null != _height && widget.centerVertical)
                           ? EdgeInsets.symmetric(
-                          vertical: (_height! -
-                              (widget.decorationPadding?.top ?? 0) -
-                              (widget.decorationPadding?.bottom ?? 0) -
-                              _textPainter.preferredLineHeight) /
-                              2)
+                              vertical: (_height! -
+                                      (widget.decorationPadding?.top ?? 0) -
+                                      (widget.decorationPadding?.bottom ?? 0) -
+                                      _textPainter.height) /
+                                  2)
                           : null,
                       border: InputBorder.none))),
           Visibility(visible: _hasFocus, child: _clearIcon()),
@@ -159,7 +160,7 @@ class _State extends State<CloseEyeTextField> {
 
   _clearIcon() {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: 5),
+        // margin: EdgeInsets.symmetric(horizontal: 5),
         child: GestureDetector(onTap: () => _controller.clear(), child: Icon(Icons.cancel, size: 20, color: Colors.grey)));
   }
 
@@ -168,8 +169,8 @@ class _State extends State<CloseEyeTextField> {
         margin: EdgeInsets.symmetric(horizontal: 5),
         child: GestureDetector(
             onTap: () => setState(() {
-              _obscureText = !_obscureText;
-            }),
+                  _obscureText = !_obscureText;
+                }),
             child: Icon(_obscureText ? CupertinoIcons.eye : CupertinoIcons.eye_slash, color: Colors.grey, size: 20)));
   }
 }
