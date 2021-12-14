@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+@Deprecated("use flutter sdk -> CheckBox")
 class CheckedBox extends StatelessWidget {
   final double size;
   final bool oval;
@@ -28,21 +29,19 @@ class CheckedBox extends StatelessWidget {
 }
 
 class IconCheckedBox extends StatelessWidget {
-  final double size;
   final Widget checkedIcon;
   final Widget icon;
   final bool value;
 
   IconCheckedBox(
       {Key? key,
-      this.size = 20,
-      this.value = false,
-      this.checkedIcon = const Icon(Icons.check_circle_outline),
-      this.icon = const Icon(Icons.circle_outlined)})
+        this.value = false,
+        this.checkedIcon = const Icon(Icons.check_circle_outline,size: 20),
+        this.icon = const Icon(Icons.circle_outlined,size: 20)})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: size, height: size, child: value ? checkedIcon : icon);
+    return value ? checkedIcon : icon;
   }
 }
