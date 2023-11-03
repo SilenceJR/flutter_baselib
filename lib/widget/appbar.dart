@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
-class ContainerAppBar extends StatelessWidget with PreferredSizeWidget {
+class ContainerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget child;
   final Size? size;
   final Alignment? alignment;
