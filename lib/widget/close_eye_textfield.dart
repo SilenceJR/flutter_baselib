@@ -13,7 +13,7 @@ class CloseEyeTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool? obscureText;
-  final TextEditingController? controller;
+  final TextEditingController controller;
   final List<TextInputFormatter>? inputFormatters;
   final Iterable<String>? autofillHints;
   final TextInputAction? textInputAction;
@@ -32,34 +32,40 @@ class CloseEyeTextField extends StatefulWidget {
   final double? cursorWidth;
   final Radius? cursorRadius;
   final bool centerVertical;
+  final StrutStyle? strutStyle;
+  final int? maxLines;
 
   CloseEyeTextField(
-      {this.hint,
-        this.showClearIcon = true,
-        this.showHideIcon = false,
-        this.readOnly = false,
-        this.prefixIcon,
-        this.suffixIcon,
-        //  隐藏 文字 以 密码形式显示
-        this.obscureText,
-        this.controller,
-        this.inputFormatters,
-        this.autofillHints,
-        this.textInputAction,
-        this.keyboardType,
-        this.onSubmitted,
-        this.onChanged,
-        this.focusNode,
-        this.textFieldHeight,
-        this.style,
-        this.hintStyle,
-        this.textAlign,
-        this.autofocus = false,
-        this.textBaseline,
-        this.cursorWidth,
-        this.cursorRadius,
-        this.centerVertical = true,
-        this.crossAxisAlignment = CrossAxisAlignment.center});
+      {Key? key,
+      this.hint,
+      this.showClearIcon = true,
+      this.showHideIcon = false,
+      this.readOnly = false,
+      this.prefixIcon,
+      this.suffixIcon,
+      //  隐藏 文字 以 密码形式显示
+      this.obscureText,
+      required this.controller,
+      this.inputFormatters,
+      this.autofillHints,
+      this.textInputAction,
+      this.keyboardType,
+      this.onSubmitted,
+      this.onChanged,
+      this.focusNode,
+      this.textFieldHeight,
+      this.style,
+      this.hintStyle,
+      this.textAlign,
+      this.autofocus = false,
+      this.textBaseline,
+      this.cursorWidth,
+      this.cursorRadius,
+      this.centerVertical = true,
+      this.strutStyle,
+      this.maxLines = 1,
+      this.crossAxisAlignment = CrossAxisAlignment.center})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -70,12 +76,10 @@ class _State extends State<CloseEyeTextField> {
   late FocusNode _focusNode;
   bool _hasFocus = false;
   double? _height;
-  late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController();
     _obscureText = widget.obscureText ?? (widget.showHideIcon && null == widget.suffixIcon);
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(() {
@@ -94,11 +98,11 @@ class _State extends State<CloseEyeTextField> {
   Widget build(BuildContext context) {
     var _style = widget.style ?? Theme.of(context).textTheme.bodyText2;
     var _textPainterHeight = (TextPainter(
-        textWidthBasis: TextWidthBasis.longestLine,
-        text: TextSpan(text: '', style: _style),
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        textDirection: TextDirection.ltr)
-      ..layout())
+            textWidthBasis: TextWidthBasis.longestLine,
+            text: TextSpan(text: '', style: _style),
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            textDirection: TextDirection.ltr)
+          ..layout())
         .height;
     return SizedBox(
       height: widget.textFieldHeight,
@@ -110,13 +114,14 @@ class _State extends State<CloseEyeTextField> {
           Expanded(
               child: TextField(
                   style: _style,
-                  controller: _controller,
-                  maxLines: 1,
+                  controller: widget.controller,
+                  maxLines: widget.maxLines,
                   autofocus: widget.autofocus,
                   cursorRadius: widget.cursorRadius ?? Radius.circular(1.5),
                   cursorWidth: widget.cursorWidth ?? 1.5,
                   readOnly: widget.readOnly,
                   focusNode: _focusNode,
+                  strutStyle: widget.strutStyle,
                   textAlignVertical: TextAlignVertical.top,
                   keyboardType: widget.keyboardType,
                   autofillHints: widget.autofillHints,
@@ -137,7 +142,7 @@ class _State extends State<CloseEyeTextField> {
                           ? EdgeInsets.symmetric(vertical: (_height! - _textPainterHeight) / 2)
                           : null,
                       border: InputBorder.none))),
-          Visibility(visible: _hasFocus, child: _clearIcon()),
+          Visibility(visible: widget.showClearIcon && _hasFocus, child: _clearIcon()),
           Visibility(visible: widget.showHideIcon, child: widget.suffixIcon ?? _hideSuffixIcon(context))
         ],
       ),
@@ -146,8 +151,7 @@ class _State extends State<CloseEyeTextField> {
 
   _clearIcon() {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: 5),
-        child: GestureDetector(onTap: () => _controller.clear(), child: Icon(Icons.cancel, size: 20, color: Colors.grey)));
+        child: GestureDetector(onTap: () => widget.controller.clear(), child: Icon(Icons.cancel, size: 20, color: Colors.grey)));
   }
 
   _hideSuffixIcon(BuildContext context) {
@@ -155,8 +159,8 @@ class _State extends State<CloseEyeTextField> {
         margin: EdgeInsets.symmetric(horizontal: 5),
         child: GestureDetector(
             onTap: () => setState(() {
-              _obscureText = !_obscureText;
-            }),
+                  _obscureText = !_obscureText;
+                }),
             child: Icon(_obscureText ? CupertinoIcons.eye : CupertinoIcons.eye_slash, color: Colors.grey, size: 20)));
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import '../utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_baselib/utils/inputformatter.dart';
 
 //下划线 验证码
 class VerifyCodeUnderLineWidget extends StatefulWidget {
@@ -10,9 +10,16 @@ class VerifyCodeUnderLineWidget extends StatefulWidget {
   final FocusNode editNode;
   final Function(String) callback;
   final Size codeSize;
+  final bool showCursor;
   final BoxDecoration? decoration;
 
-  VerifyCodeUnderLineWidget({required this.callback, this.length = 6, FocusNode? editNode, this.codeSize = const Size(45, 45), this.decoration})
+  VerifyCodeUnderLineWidget(
+      {required this.callback,
+      this.length = 6,
+      this.showCursor = true,
+      FocusNode? editNode,
+      this.codeSize = const Size(45, 45),
+      this.decoration})
       : this.editNode = editNode ?? FocusNode();
 
   @override
@@ -40,8 +47,9 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
   void initState() {
     super.initState();
     _editController = TextEditingController();
-    if (null == _timer && null == widget.decoration) {
-      _timer = Timer.periodic(Duration(milliseconds: 800), (timer) => _callback(timer));
+    _timer?.cancel();
+    if (widget.showCursor) {
+      _timer = Timer.periodic(Duration(milliseconds: 500), (timer) => _callback(timer));
     }
     _editController.addListener(() {
       codeStr = _editController.text;
@@ -64,34 +72,23 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        if (widget.editNode.hasFocus) {
-          Utils.hideKeyboardUnfocus(context);
-        } else {
-          FocusScope.of(context).requestFocus(widget.editNode);
-        }
-      },
-      child: Stack(
-        children: [
-          Container(
+    return Stack(
+      children: [
+        SizedBox(
             width: 0,
             height: 0,
             child: TextField(
                 controller: _editController,
                 focusNode: widget.editNode,
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[\\d]")), LengthLimitingTextInputFormatter(widget.length)],
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r"[0-9]")), LengthLimitInputFormatter(widget.length)],
                 keyboardType: TextInputType.number,
                 autofillHints: [AutofillHints.oneTimeCode],
-                autofocus: true),
-          ),
-          Container(
-            width: double.maxFinite,
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: _buildCodeRow()),
-          )
-        ],
-      ),
+                autofocus: true)),
+        Container(
+          width: double.maxFinite,
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: _buildCodeRow()),
+        )
+      ],
     );
   }
 
@@ -103,15 +100,35 @@ class _VerifyCodeUnderLineWidgetState extends State<VerifyCodeUnderLineWidget> {
     return list;
   }
 
-  Widget _buildCodeItem(int index) => Container(
-        width: widget.codeSize.width,
-        height: widget.codeSize.height,
-        decoration: widget.decoration ??
-            BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: index == codeStr.length && flash ? null : Border(bottom: BorderSide(color: Color(0xFF707070)))),
-        child: Center(
-            child:
-                Text(codeStr.length > index ? codeStr.characters.elementAt(index) : "", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600))),
+  Widget _buildCodeItem(int index) => GestureDetector(
+        onTap: () {
+          if (!widget.editNode.hasFocus) {
+            widget.editNode.requestFocus();
+          }
+        },
+        child: Container(
+          width: widget.codeSize.width,
+          height: widget.codeSize.height,
+          decoration: widget.decoration,
+          child: Stack(
+            children: [
+              Center(
+                  child: Text(codeStr.length > index ? codeStr.characters.elementAt(index) : "",
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600))),
+              Visibility(
+                visible: widget.showCursor,
+                child: Positioned(
+                    bottom: widget.codeSize.width * 0.3,
+                    left: widget.codeSize.width * 0.3,
+                    right: widget.codeSize.width * 0.3,
+                    child: Container(
+                        height: 2,
+                        decoration: index == codeStr.length && flash
+                            ? BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(2))
+                            : null)),
+              ),
+            ],
+          ),
+        ),
       );
 }

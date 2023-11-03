@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_baselib/utils/inputformatter.dart';
 
 typedef OnCompleteCallback = Function(String char);
 
@@ -17,12 +18,7 @@ class CharInputTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
 
   CharInputTextField(
-      {Key? key,
-      required this.childBuilder,
-      this.length = 6,
-      defaultChar = "",
-      this.textInputType = TextInputType.text,
-      this.onChanged})
+      {Key? key, required this.childBuilder, this.length = 6, defaultChar = "", this.textInputType = TextInputType.text, this.onChanged})
       : super(key: key) {
     controller.text = defaultChar;
   }
@@ -63,7 +59,7 @@ class CharTextFieldState extends State<CharInputTextField> {
             textInputAction: TextInputAction.done,
             enableInteractiveSelection: false,
             style: TextStyle(color: Colors.transparent),
-            inputFormatters: [LengthLimitingTextInputFormatter(widget.length)],
+            inputFormatters: [LengthLimitInputFormatter(widget.length)],
             decoration: InputDecoration(
               border: InputBorder.none,
             ),

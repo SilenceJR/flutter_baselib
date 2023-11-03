@@ -1,6 +1,8 @@
 import 'dart:io';
-import 'dart:ui';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -9,8 +11,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
-  static void hideKeyboard([BuildContext? context]) {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
+  static Future hideKeyboard() async {
+    await SystemChannels.textInput.invokeMethod('TextInput.hide');
+  }
+
+  static Future showKeyboard() async {
+    await SystemChannels.textInput.invokeMethod('TextInput.show');
   }
 
   ///不要放在app顶层
@@ -48,17 +54,35 @@ class Utils {
   }
 
   ///RepaintBoundary
-  static save2Gallery(BuildContext context, {Function(bool res)? done, Function()? error}) async {
+  static Future<ui.Image> getBoundaryImage({required GlobalKey repaintboundaryKey}) async {
+    var context = repaintboundaryKey.currentContext!;
+    RenderRepaintBoundary renderObject = context.findRenderObject() as RenderRepaintBoundary;
+    return renderObject.toImage(pixelRatio: MediaQuery.of(context).devicePixelRatio);
+  }
+
+  static Future<Uint8List> getBoundaryImageBinary({required ui.Image image}) async {
+    var byteData = (await image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    return byteData;
+  }
+
+  ///RepaintBoundary.key.context
+  static saveScreenHost2Gallery(GlobalKey repaintboundaryKey, {Function(bool res)? done, Function()? error}) async {
+    var byteData = await getBoundaryImageBinary(image: await getBoundaryImage(repaintboundaryKey: repaintboundaryKey));
+    savePic2Gallery(byteData, done: done, error: error);
+  }
+
+  static savePic2Gallery(Uint8List byteData, {Function(bool res)? done, Function()? error}) async {
     var permission = await Permission.storage.request();
     if (!permission.isGranted) {
       error?.call();
       return;
     }
-    RenderRepaintBoundary renderObject = context.findRenderObject() as RenderRepaintBoundary;
-    var image = await renderObject.toImage(pixelRatio: MediaQuery.of(context).devicePixelRatio);
-    var byteData = (await image.toByteData(format: ImageByteFormat.png))!.buffer.asUint8List();
-    // var res = await ImageSave.saveImage(byteData, "image_${DateTime.now().second}.jpg");
     var res = await ImageGallerySaver.saveImage(byteData, quality: 100);
     done?.call(res['isSuccess'] == true);
+  }
+
+  ///将本地文件存储到媒体库
+  static Future saveFile2Gallery(String filePath, {String? name, bool isReturnPathOfIOS = false}) async {
+    await ImageGallerySaver.saveFile(filePath, name: name, isReturnPathOfIOS: isReturnPathOfIOS);
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_baselib/baselib.dart';
 import 'package:get/get.dart';
-
-import '../dialog/dialog.dart';
-import '../utils/util.dart';
 
 extension Alert on GetInterface {
   Future<T?> showDialog<T>(Widget widget,
@@ -27,6 +25,29 @@ extension Alert on GetInterface {
         transitionCurve: transitionCurve,
         name: name,
         routeSettings: routeSettings);
+  }
+
+  Future<T?> showTopSheet<T>(
+    Widget topSheet, {
+    Color barrierColor = Colors.black38,
+    bool hideKeyboard = true,
+    bool barrierDismissible = true,
+    bool useRootNavigator = false,
+    bool? ignoreSafeArea,
+    bool isScrollControlled = false,
+    RouteSettings? routeSettings,
+    EdgeInsetsGeometry? offset,
+  }) {
+    if (hideKeyboard) {
+      hideKeyBoard();
+    }
+    return Navigator.of(overlayContext!, rootNavigator: useRootNavigator).push<T>(TopSheetRoute<T>(
+        builder: (_) => topSheet,
+        isScrollControlled: isScrollControlled,
+        ignoreSafeArea: ignoreSafeArea,
+        barrierColor: barrierColor,
+        offset: offset,
+        settings: routeSettings));
   }
 
   Future<T?> showBottomSheet<T>(Widget bottomSheet,
@@ -66,16 +87,22 @@ extension Alert on GetInterface {
   }
 
   ///buildContext is overlayContext
-  showToast(String content, {BuildContext? buildContext, TGravity gravity = TGravity.CENTER, int duration = Toast.SHORT_LENGTH}) {
+  showToast(String content,
+      {BuildContext? buildContext, TGravity gravity = TGravity.CENTER, int duration = Toast.SHORT_LENGTH}) {
     Toast.show(buildContext ?? Get.overlayContext!, content, gravity: gravity, duration: duration);
   }
 
-  Future<T?> showToastDialog<T>(bool state, String content) {
-    return showDialog(ToastDialog(state, content));
+  Future<T?> showToastDialog<T>(bool state, String content,
+      {Duration duration = const Duration(milliseconds: 2500), bool? autoDismiss}) {
+    return showDialog(ToastDialog(state, content, duration: duration, autoDismiss: autoDismiss));
   }
 
-  Future<T?> showLoadingDialog<T>({String? content, bool outsideDismiss = false, bool onBackDismiss = true}) {
-    return showDialog(LoadingDialog(content, outsideDismiss: outsideDismiss, onBackDismiss: onBackDismiss), barrierDismissible: false);
+  Future<T?> showLoadingDialog<T>(
+      {String? content, bool outsideDismiss = false, bool onBackDismiss = true, LoadingController? loadingController}) {
+    return showDialog(
+        LoadingDialog(content,
+            outsideDismiss: outsideDismiss, onBackDismiss: onBackDismiss, controller: loadingController),
+        barrierDismissible: false);
   }
 }
 
@@ -90,20 +117,23 @@ extension GetExt on GetInterface {
 
   ///关闭当前页面第一个弹窗  dialog or bottomSheet or snakeBar
   dismiss<T>({T? result, int? id}) {
-    if (Get.isOverlaysOpen) {
+    if (Get.routing.route is! GetPageRoute) {
       Get.back<T>(result: result, closeOverlays: false, canPop: true, id: id);
     }
   }
 
   ///关闭当前 所有弹窗 包括 dialog bottomSheet snakeBar
   dismissAll() {
-    if (Get.isOverlaysOpen) {
-      navigator?.popUntil((route) {
-        return (Get.isOverlaysClosed);
-      });
+    if (Get.isSnackbarOpen) {
+      SnackbarController.cancelAllSnackbars();
     }
+    Get.until((route) => route is GetPageRoute);
   }
 
   ///关闭当前页面 包括 当前页面的 dialog  bottomSheet snakeBar
-  backPage<T>({T? result, bool canPop = true, int? id}) => Get.back(result: result, closeOverlays: true, canPop: canPop, id: id);
+  backPage<T>({T? result, bool canPop = true, int? id}) {
+    // dismissAll();
+    // Get.back(result: result, canPop: true, closeOverlays: false, id: id);
+    Get.back(result: result, canPop: true, closeOverlays: true, id: id);
+  }
 }

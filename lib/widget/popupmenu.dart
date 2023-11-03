@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class PopPosition {
-  static const AUTO = 0;
-  static const LEFT = 1;
-  static const TOP = 2;
-  static const RIGHT = 3;
-  static const BOTTOM = 4;
-}
+enum PopPosition { LEFT, TOP, RIGHT, BOTTOM }
 
 class PopupWindow extends StatefulWidget {
   static Future<T?> show<T>(
-      {required BuildContext context, required GlobalKey widgetKey, required int popPosition, required Widget child, Offset offset = Offset.zero}) {
-    return Navigator.push(context, PopRoute<T>(widgetKey: widgetKey, popPosition: popPosition, child: child, offset: offset));
+      {required BuildContext context,
+      required GlobalKey widgetKey,
+      required PopPosition popPosition,
+      required Widget child,
+      RouteSettings? settings,
+      Color? barrierColor,
+      Offset offset = Offset.zero}) {
+    return Navigator.of(context, rootNavigator: true).push(
+      PopRoute<T>(
+          widgetKey: widgetKey, popPosition: popPosition, child: child, offset: offset, barrierColor: barrierColor, settings: settings),
+    );
   }
 
   final GlobalKey widgetKey;
-  final int popPosition;
+  final PopPosition popPosition;
   final Widget child;
   final Offset offset;
 
@@ -111,14 +114,23 @@ class _PopWindowState extends State<PopupWindow> with TickerProviderStateMixin {
 
 class PopRoute<T> extends PopupRoute<T> {
   final GlobalKey widgetKey;
-  final int popPosition;
+  final PopPosition popPosition;
   final Widget child;
   final Offset offset;
+  final Color? _barrierColor;
 
-  PopRoute({required this.widgetKey, required this.popPosition, required this.child, this.offset = Offset.zero});
+  PopRoute(
+      {required this.widgetKey,
+      required this.popPosition,
+      required this.child,
+      this.offset = Offset.zero,
+      Color? barrierColor,
+      RouteSettings? settings})
+      : _barrierColor = barrierColor,
+        super(settings: settings);
 
   @override
-  Color? get barrierColor => null;
+  Color? get barrierColor => _barrierColor;
 
   @override
   bool get barrierDismissible => true;

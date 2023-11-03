@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_baselib/baselib.dart';
 
 class ContainerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget child;
@@ -9,19 +10,23 @@ class ContainerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final double? elevation;
 
-  ContainerAppBar({required this.child, this.size, this.alignment, this.padding, this.backgroundColor, this.elevation});
+  ContainerAppBar({Key? key, required this.child, this.size, this.alignment, this.padding, this.backgroundColor, this.elevation})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var appBarTheme = Theme.of(context).appBarTheme;
+    var overlayStyle = _systemOverlayStyleForBrightness(
+        null != backgroundColor ? ThemeData.estimateBrightnessForColor(backgroundColor!) : Theme.of(context).brightness);
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: Theme.of(context).appBarTheme.systemOverlayStyle ?? SystemUiOverlayStyle.light,
+        value: overlayStyle,
         child: Material(
-            color: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor,
-            elevation: this.elevation ?? Theme.of(context).appBarTheme.elevation ?? 2,
-            shadowColor: Theme.of(context).appBarTheme.shadowColor,
+            color: backgroundColor ?? appBarTheme.backgroundColor,
+            elevation: this.elevation ?? appBarTheme.elevation ?? 2,
+            shadowColor: appBarTheme.shadowColor,
             child: SafeArea(
                 child: Container(
-                    alignment: alignment ?? Alignment.bottomCenter,
+                    alignment: alignment ?? Alignment.center,
                     padding: padding ?? EdgeInsets.symmetric(horizontal: NavigationToolbar.kMiddleSpacing, vertical: 5),
                     constraints: BoxConstraints(minHeight: kToolbarHeight),
                     child: child))));
@@ -29,4 +34,9 @@ class ContainerAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => this.size ?? Size.fromHeight(kToolbarHeight);
+
+  SystemUiOverlayStyle _systemOverlayStyleForBrightness(Brightness brightness) {
+    return brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
+  }
 }
+

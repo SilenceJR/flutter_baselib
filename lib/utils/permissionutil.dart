@@ -1,63 +1,40 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-class PermissionUtil {
-  static Future checkPermissionFunc(FutureOr<bool> permission, {Function? grantedFunc, Function? deniedFunc, String? desc}) async {
-    ((permission is Future) ? await permission : permission)
-        ? grantedFunc?.call()
-        : null != deniedFunc
-            ? deniedFunc.call()
-            : Get.dialog(CupertinoAlertDialog(
-                title: Text("no_permission".tr),
-                content: Text(desc ?? "permission_desc".tr),
-                actions: [
-                  CupertinoDialogAction(
-                    child: Text("confirm".tr),
-                    onPressed: () async {
-                      if (Get.isDialogOpen ?? false) {
-                        Get.back();
-                      }
-                      openSettings();
-                    },
-                    isDestructiveAction: true,
-                  ),
-                ],
-              ));
-  }
+export 'package:permission_handler/permission_handler.dart';
 
-  static Future<bool> checkPermission(List<Permission> permissions, {String? desc}) async {
+class PermissionUtil {
+  static Future checkPermission(List<Permission> permissions,
+      {Function? grantedFunc, Function(Map<Permission, PermissionStatus> p)? deniedFunc}) async {
     Map<Permission, PermissionStatus> request = await permissions.request();
-    var isGranted = true;
-    request.forEach((key, value) {
-      print("权限--${key.toString()}----->${value.toString()}");
-      isGranted = isGranted && value.isGranted;
-    });
-    if (!isGranted) {
-      Get.dialog(CupertinoAlertDialog(
-        title: Text("no_permission".tr),
-        content: Text(desc ?? "permission_desc".tr),
-        actions: [
-          CupertinoDialogAction(
-            child: Text("confirm".tr),
-            onPressed: () async {
-              if (Get.isDialogOpen ?? false) {
-                Get.back();
-              }
-              openSettings();
-            },
-            isDestructiveAction: true,
-          ),
-        ],
-      ));
+    request.removeWhere((key, value) => value.isGranted);
+    if (request.isEmpty) {
+      grantedFunc?.call();
+    } else {
+      deniedFunc?.call(request);
     }
-    return isGranted;
   }
 
   static void openSettings() {
     PhotoManager.openSetting();
   }
+
+  static List<Permission> locationPermission = [
+    Permission.location,
+    Permission.locationWhenInUse,
+  ];
+
+  static List<Permission> galleryPermission = [
+    Permission.camera,
+    Permission.photos,
+  ];
+
+  static List<Permission> audioPermission = [
+    Permission.storage,
+    Permission.microphone,
+  ];
+
+  static List<Permission> notifyPermission = [
+    Permission.notification,
+  ];
 }
