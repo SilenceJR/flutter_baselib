@@ -1,7 +1,7 @@
 name: flutter_baselib
 description: dev common lib
 version: 0.1.11
-homepage: https://github.com/Mocaris/flutter_baselib.git
+homepage: https://gitee.com/SilenceJR/flutter_baselib.git
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
