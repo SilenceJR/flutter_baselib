@@ -80,7 +80,7 @@ class Toast {
   static Timer? _timer;
 
   static show(BuildContext context, String content,
-      {TGravity gravity = TGravity.CENTER,
+      {TGravity gravity = TGravity.BOTTOM,
       int duration = Toast.SHORT_LENGTH,
       double horizontalOffset = 0,
       double verticalOffset = 0}) {
@@ -102,7 +102,7 @@ class Toast {
       _overlayEntry = null;
     }
     _overlayEntry = tEntry.overlayEntry;
-    Overlay.of(context)?.insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
     _timer = Timer(Duration(milliseconds: tEntry.duration), () {
       _overlayEntry?.remove();
       _overlayEntry = null;
