@@ -9,16 +9,21 @@ class _ToastEntry {
   late OverlayEntry overlayEntry;
 
   _ToastEntry(String content,
-      {gravity = TGravity.CENTER, this.duration = Toast.SHORT_LENGTH, horizontalOffset = 0, verticalOffset = 0}) {
+      {gravity = TGravity.CENTER,
+      this.duration = Toast.SHORT_LENGTH,
+      horizontalOffset = 0,
+      verticalOffset = 0}) {
     this.overlayEntry = OverlayEntry(
         builder: (BuildContext context) => Positioned(
-              top: _buildToastPosition(gravity, MediaQuery.of(context).size.height),
+              top: _buildToastPosition(
+                  gravity, MediaQuery.of(context).size.height),
               left: 20,
               right: 20,
               child: Container(
                 alignment: Alignment.center,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalOffset, vertical: verticalOffset),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: horizontalOffset, vertical: verticalOffset),
                   child: AnimatedOpacity(
                     opacity: 1.0,
                     duration: Duration(milliseconds: 500),
@@ -33,12 +38,15 @@ class _ToastEntry {
     var light = Theme.of(context).brightness == Brightness.light;
     return Center(
       child: Card(
-        color: light ? Colors.black.withOpacity(0.7) : Colors.white.withOpacity(0.7),
+        color: light
+            ? Colors.black.withOpacity(0.7)
+            : Colors.white.withOpacity(0.7),
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Text(
             content,
-            style: TextStyle(color: light ? Colors.white : Colors.black, fontSize: 14.0),
+            style: TextStyle(
+                color: light ? Colors.white : Colors.black, fontSize: 14.0),
           ),
         ),
       ),
@@ -76,8 +84,11 @@ class Toast {
       int duration = Toast.SHORT_LENGTH,
       double horizontalOffset = 0,
       double verticalOffset = 0}) {
-    var tEntry =
-        _ToastEntry(content, duration: duration, horizontalOffset: horizontalOffset, verticalOffset: verticalOffset);
+    var tEntry = _ToastEntry(content,
+        gravity: gravity,
+        duration: duration,
+        horizontalOffset: horizontalOffset,
+        verticalOffset: verticalOffset);
     _showEntry(context, tEntry);
   }
 
