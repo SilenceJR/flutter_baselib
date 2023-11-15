@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_baselib/baselib.dart';
-import 'package:get/get.dart';
 
 extension Alert on GetInterface {
   Future<T?> showDialog<T>(Widget widget,

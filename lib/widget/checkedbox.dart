@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_baselib/baselib.dart';
 
 class IconCheckedBox extends StatelessWidget {
   final Widget checkedIcon;
@@ -20,6 +19,6 @@ class IconCheckedBox extends StatelessWidget {
         secondChild: checkedIcon,
         crossFadeState:
             value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        duration: 300.milliseconds);
+        duration: Duration(milliseconds: 300));
   }
 }
