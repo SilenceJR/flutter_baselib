@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_baselib/baselib.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
-import 'package:video_compress/video_compress.dart';
+// import 'package:video_compress/video_compress.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
 export 'package:wechat_assets_picker/wechat_assets_picker.dart' hide NotifyManager;
@@ -54,9 +54,10 @@ class PickImageUtil {
                 file = (await compressImage(file.path,
                         quality: quality, targetWidth: targetWidth, targetHeight: targetHeight)) ??
                     file;
-              } else if (type == RequestType.video) {
-                file = (await compressVideo(file.path))?.file ?? file;
               }
+              // else if (type == RequestType.video) {
+              //   file = (await compressVideo(file.path))?.file ?? file;
+              // }
             }
             valueChanged.call(UpFile(file: file, title: await assetEntity.titleAsync));
           }
@@ -99,9 +100,9 @@ class PickImageUtil {
     }
   }
 
-  static Future<MediaInfo?> compressVideo(String filePath) async {
-    return await VideoCompress.compressVideo(filePath, quality: VideoQuality.DefaultQuality);
-  }
+  // static Future<MediaInfo?> compressVideo(String filePath) async {
+  //   return await VideoCompress.compressVideo(filePath, quality: VideoQuality.DefaultQuality);
+  // }
 
   static Future<File?> compressImage(String imgPath,
       {int quality = 80, int targetWidth = 0, int targetHeight = 0}) async {
