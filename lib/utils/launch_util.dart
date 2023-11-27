@@ -1,15 +1,15 @@
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class LaunchUtil {
   static Future<bool> callPhone(String phone) {
-    return launch("tel:$phone");
+    return launchUrlString("tel:$phone");
   }
 
   static Future<bool> sendSms(String phone) {
-    return launch("sms:$phone");
+    return launchUrlString("sms:$phone");
   }
 
   static Future<bool> sendMail(String mailAddress) {
-    return launch("mailto:$mailAddress");
+    return launchUrlString("mailto:$mailAddress");
   }
 }

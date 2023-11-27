@@ -1,4 +1,3 @@
-import 'package:characters/characters.dart';
 import 'package:flutter/services.dart';
 
 class MoneyInputFormatter extends TextInputFormatter {
@@ -17,25 +16,5 @@ class MoneyInputFormatter extends TextInputFormatter {
       newText = oldValue.text;
     }
     return TextEditingValue(text: newText, selection: TextSelection.collapsed(offset: newText.length));
-  }
-}
-
-class LengthLimitInputFormatter extends TextInputFormatter {
-  final int max;
-
-  LengthLimitInputFormatter(this.max) : assert(max > 0, "max length must greater than 0");
-
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (!newValue.isComposingRangeValid) {
-      var newText = newValue.text.characters.toList();
-      if (newText.length <= max) {
-        return newValue;
-      }
-      newText = newText.sublist(0, max);
-      var txt = newText.join();
-      return TextEditingValue(text: txt, selection: TextSelection.collapsed(offset: txt.length));
-    }
-    return newValue;
   }
 }
