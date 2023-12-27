@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
 
 class MapUtil {
   static getMaps() {}

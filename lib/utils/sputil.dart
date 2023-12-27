@@ -1,8 +1,11 @@
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class SPUtil extends GetxController {
-  static final SPUtil instance = SPUtil();
+class SPUtil {
+  SPUtil._();
+
+  static SPUtil? _instance;
+
+  static SPUtil get instance => _instance ??= SPUtil._();
 
   static final _configName = "AppPref";
 
