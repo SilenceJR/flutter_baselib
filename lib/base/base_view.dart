@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'base.dart';
 
-export 'package:get/get.dart';
+export 'package:get/get.dart'
+    hide
+        FormData,
+        GetNumUtils,
+        GetConnect,
+        GetConnectInterface,
+        GetHttpClient,
+        MultipartFile,
+        Response;
 
 abstract class BaseGetView<T extends BaseGetController> extends GetView<T> {
   const BaseGetView({super.key});

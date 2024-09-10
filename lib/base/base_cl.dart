@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_baselib/mixin/refresh_mixin.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' show CancelToken;
-export 'package:get/get.dart';
+export 'package:get/get.dart'
+    hide
+        FormData,
+        GetNumUtils,
+        GetConnect,
+        GetConnectInterface,
+        GetHttpClient,
+        MultipartFile,
+        Response;
 
 enum PageStatus {
   idle,
