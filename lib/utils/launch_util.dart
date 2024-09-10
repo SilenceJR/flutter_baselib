@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LaunchUtil {
@@ -13,7 +14,8 @@ class LaunchUtil {
     return launchUrlString("mailto:$mailAddress");
   }
 
-  static Future<bool> openUrl(String url) {
+  static Future<bool> openUrl(String url) async {
+    if (!await checkUrl(url)) return false;
     return launchUrlString(url);
   }
 
