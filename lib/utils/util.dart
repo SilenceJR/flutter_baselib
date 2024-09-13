@@ -44,12 +44,12 @@ class Utils {
 
   ///RepaintBoundary
   static Future<ui.Image> getBoundaryImage(
-      {required GlobalKey repaintboundaryKey}) async {
+      {required GlobalKey repaintboundaryKey, double? pixelRatio}) async {
     var context = repaintboundaryKey.currentContext!;
     RenderRepaintBoundary renderObject =
         context.findRenderObject() as RenderRepaintBoundary;
     return renderObject.toImage(
-        pixelRatio: MediaQuery.of(context).devicePixelRatio);
+        pixelRatio: pixelRatio ?? MediaQuery.of(context).devicePixelRatio);
   }
 
   static Future<Uint8List> getBoundaryImageBinary(
